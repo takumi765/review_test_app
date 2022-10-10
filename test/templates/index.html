@@ -1,5 +1,14 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  {{ name }}
+<div>
+  {% for test in tests_list %}
+  <ul>
+      <li>{{ test.que }}</li>
+      <li>{{ test.ans }}</li>
+      <li>総出題回数：{{ test.total }}</li>
+      <li>正解回数：{{ test.correct }}</li>
+  </ul>
+  {% endfor %}
+</div>
 {% endblock %}
