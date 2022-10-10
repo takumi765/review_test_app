@@ -1,0 +1,12 @@
+version: '3'
+services:
+  webapp:
+    restart: always
+    build: .
+    volumes:
+      - .:/django-vue.js-docker_sample
+    command: python3 manage.py runserver 0.0.0.0:8888
+    ports:
+      - "80:8888"
+    extra_hosts:                  # 追加
+      - localhost:172.23.0.1      # 追加 研究室のパソコンは172.18.0.1
