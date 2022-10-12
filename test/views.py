@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from .models import Test
 
 def index(request):
@@ -7,5 +7,9 @@ def index(request):
     tests = Test.objects.all()
     tests_list["tests_list"] = tests
     return render(request, 'index.html', tests_list)
+
   elif request.method == 'POST':
-    return render(request, 'index.html')
+    question = request.POST['question']
+    answer = request.POST['answer']
+    Test.objects.create(que=question, ans=answer)
+    return redirect('test')
