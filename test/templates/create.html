@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<!-- 問題をdbに追加する -->
+<form method="post" action="{% url 'test:create' %}">
+  {% csrf_token %}
+  <input type="text", placeholder="問題", name="question">
+  <input type="text", placeholder="解答", name="answer">
+  <button type="submit">テストを追加</button>
+</form>
+
+<!-- メニューに戻る -->
+<form method="get" action="{% url 'test:index' %}">
+  <button>戻る</button>
+</form>
+
+
+{% endblock %}

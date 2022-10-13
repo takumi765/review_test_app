@@ -1,24 +1,16 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
-<!-- 問題をdbに追加する -->
-<form method="post" action="/">
-  {% csrf_token %}
-  <input type="text", placeholder="問題", name="question">
-  <input type="text", placeholder="解答", name="answer">
-  <button type="submit">テストを追加</button>
+<!-- createページへ -->
+<form method="get" action="{% url 'test:create' %}">
+  <button>テストを作る</button>
 </form>
-
-
-<div>
-  {% for test in tests_list %}
-  <ul>
-      <li>{{ test.que }}</li>
-      <li>{{ test.ans }}</li>
-      <li>総出題回数：{{ test.total }}</li>
-      <li>正解回数：{{ test.correct }}</li>
-  </ul>
-  {% endfor %}
-</div>
+<!-- examページへ -->
+<form method="get" action="{% url 'test:exam' %}">
+  <button>テストを始める</button>
+</form>
+<!-- historyページへ -->
+<form method="get" action="{% url 'test:history' %}">
+  <button>登録した問題</button>
+</form>
 {% endblock %}

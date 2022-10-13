@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<!-- メニューに戻る -->
+<form method="get" action="{% url 'test:index' %}">
+  <button>戻る</button>
+</form>
+
+テストを始める
+{% endblock %}
