@@ -5,7 +5,7 @@
 <form method="get" action="{% url 'test:history' %}">
   <button>戻る</button>
 </form>
-
+<h3 style="padding-top: 10px;">選択したテストの内容</h3>
 <div>
   <ul>
       <li>{{ test.que }}</li>
@@ -13,7 +13,25 @@
       <li>総出題回数：{{ test.total }}</li>
       <li>正解回数：{{ test.correct }}</li>
   </ul>
-  <li><button method="pose", action="{% url 'test:update' %}">更新</button></li>
-  <li><button method="pose", action="{% url 'test:update' %}">更新</button></li>
 </div>
+
+<h3 style="padding-top: 10px;">内容を更新する</h3>
+<form method="post" action="{% url 'test:update' %}">
+  {% csrf_token %}
+  <input type="hidden" name="test_id" value="{{ test.id }}">
+  <div>
+    <div>
+      <p>問題</p>
+      <textarea rows="5" cols="50" name="test_que"></textarea>
+    </div>
+    <div>
+      <p>解答</p>
+      <textarea rows="5" cols="50" name="test_ans"></textarea>
+    </div>
+  </div>
+  <!-- 送信ボタン -->
+  <button type="submit">更新</button>
+</form>
+
+
 {% endblock %}

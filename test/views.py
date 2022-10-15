@@ -1,21 +1,19 @@
 from django.shortcuts import redirect, render
+from django.http import HttpResponseRedirect
+from django.urls import reverse
 from .models import Test
 
 def index(request):
   if request.method == 'GET':
     return render(request, 'index.html')
-  elif request.method == 'POST':
-    question = request.POST['question']
-    answer = request.POST['answer']
-    Test.objects.create(que=question, ans=answer)
-    return redirect('index.html')
 
 def create(request):
   if request.method == 'GET':
     return render(request, 'create.html')
   elif request.method == 'POST':
-    question = request.POST['question']
-    answer = request.POST['answer']
+    """ 入力された問題文と解答をdbに登録する """
+    question = request.POST.get('question')
+    answer = request.POST.get('answer')
     Test.objects.create(que=question, ans=answer)
     return render(request, 'create.html')
 
@@ -27,15 +25,31 @@ def exam(request):
 
 def history(request):
   if request.method == 'GET':
+    """ dbに登録された全てのテストを出力する """
     tests_list = {}
     tests = Test.objects.all()
     tests_list["tests_list"] = tests
     return render(request, 'history.html', tests_list)
   elif request.method == 'POST':
-    return render(request, 'update.html')
+    """ テストidを取得しデータを格納してupdateに送る """
+    test_id = request.POST.get('test_id')
+    test = Test.objects.get(id=test_id)
+    param = {'test': {}}
+    param['test']['id'] = test_id
+    param['test']['que'] = test.que
+    param['test']['ans'] = test.ans
+    param['test']['total'] = test.total
+    param['test']['correct'] = test.correct
+    return render(request, 'update.html', param)
 
 def update(request):
-  if request.method == 'GET':
-    return render(request, 'update.html')
-  elif request.method == 'POST':
-    return render(request, 'update.html')
+  if request.method == 'POST':
+    """ 問題のidに基づきその内容を変更する """
+    test_id=request.POST.get('test_id')
+    test_que=request.POST.get('test_que')
+    test_ans=request.POST.get('test_ans')
+    test = Test.objects.get(id=test_id)
+    test.que = test_que
+    test.ans = test_ans
+    test.save()
+    return HttpResponseRedirect(reverse('test:history'))

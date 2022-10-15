@@ -13,7 +13,13 @@
       <li>{{ test.ans }}</li>
       <li>総出題回数：{{ test.total }}</li>
       <li>正解回数：{{ test.correct }}</li>
-      <li><form method="post", action="{% url 'test:history' %}"><button>編集する</button></form></li>
+      <li>
+        <form method="post", action="{% url 'test:history' %}">
+          {% csrf_token %}
+          <input type="hidden" name="test_id" value="{{ test.id }}">
+          <button type="submit">編集する</button>
+        </form>
+      </li>
   </ul>
   {% endfor %}
 </div>
