@@ -2,19 +2,18 @@
 
 {% block content %}
 <!-- メニューに戻る -->
-<form method="get" action="{% url 'test:index' %}">
+<form method="get" action="{% url 'test:history' %}">
   <button>戻る</button>
 </form>
 
 <div>
-  {% for test in tests_list %}
   <ul>
       <li>{{ test.que }}</li>
       <li>{{ test.ans }}</li>
       <li>総出題回数：{{ test.total }}</li>
       <li>正解回数：{{ test.correct }}</li>
-      <li><form method="post", action="{% url 'test:history' %}"><button>編集する</button></form></li>
   </ul>
-  {% endfor %}
+  <li><button method="pose", action="{% url 'test:update' %}">更新</button></li>
+  <li><button method="pose", action="{% url 'test:update' %}">更新</button></li>
 </div>
 {% endblock %}

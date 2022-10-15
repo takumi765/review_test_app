@@ -3,7 +3,7 @@ from .models import Test
 
 def index(request):
   if request.method == 'GET':
-    return render(request, 'index.html', )
+    return render(request, 'index.html')
   elif request.method == 'POST':
     question = request.POST['question']
     answer = request.POST['answer']
@@ -32,4 +32,10 @@ def history(request):
     tests_list["tests_list"] = tests
     return render(request, 'history.html', tests_list)
   elif request.method == 'POST':
-    return render(request, 'history.html')
+    return render(request, 'update.html')
+
+def update(request):
+  if request.method == 'GET':
+    return render(request, 'update.html')
+  elif request.method == 'POST':
+    return render(request, 'update.html')
