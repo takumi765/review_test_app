@@ -5,6 +5,24 @@
 <form method="get" action="{% url 'test:index' %}">
   <button>戻る</button>
 </form>
+<h3>問題</h3>
+{{test.que}}
 
-テストを始める
+<!-- 初期画面は非表示 -->
+<div>
+  <h3>解答</h3>
+  {{test.ans}}
+  <h3>正答率</h3>
+  正解数：{{test.correct}}<br>
+  出題数：{{test.total}}<br>
+  {{percent|floatformat:2}}%<!-- 小数点第二位まで表示する -->
+  <form method="post" action="{%url 'test:exam' %}">
+    {% csrf_token %}
+    <input type="hidden" name="test_id" value="{{test.id}}">
+    <button type="submit" name="correct">正解</button>
+    <button type="submit" name="uncorrect">不正解</button>
+  </form>
+</div>
+
+<button class="OK">解答を見る</button>
 {% endblock %}

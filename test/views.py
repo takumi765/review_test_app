@@ -1,3 +1,4 @@
+from random import randint, random
 from django.shortcuts import redirect, render
 from django.http import HttpResponseRedirect
 from django.urls import reverse
@@ -19,9 +20,27 @@ def create(request):
 
 def exam(request):
   if request.method == 'GET':
-    return render(request, 'exam.html')
+    """ dbに登録されたデータをランダムに取り出す """
+    counter = Test.objects.all().count()
+    test = Test.objects.get(id=randint(1, counter))
+    param={'test': test, 'percent': {}}
+    if test.total == 0:
+      param["percent"]=0
+    else:
+      param["percent"]=(test.correct/test.total)*100
+    return render(request, 'exam.html', param)
+    
   elif request.method == 'POST':
-    return render(request, 'exam.html')
+    """ 正解数と出題数を変更する """
+    test_id = request.POST.get('test_id')
+    test = Test.objects.get(id=test_id)
+    if "correct" in request.POST:
+      test.correct+=1
+      test.total+=1
+    elif "uncorrect" in request.POST:
+      test.total+=1
+    test.save()
+    return HttpResponseRedirect(reverse('test:exam'))
 
 def history(request):
   if request.method == 'GET':
@@ -30,6 +49,7 @@ def history(request):
     tests = Test.objects.all()
     tests_list["tests_list"] = tests
     return render(request, 'history.html', tests_list)
+
   elif request.method == 'POST':
     """ テストidを取得しデータを格納してupdateに送る """
     test_id = request.POST.get('test_id')
