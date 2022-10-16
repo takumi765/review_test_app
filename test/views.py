@@ -66,10 +66,14 @@ def update(request):
   if request.method == 'POST':
     """ 問題のidに基づきその内容を変更する """
     test_id=request.POST.get('test_id')
-    test_que=request.POST.get('test_que')
-    test_ans=request.POST.get('test_ans')
     test = Test.objects.get(id=test_id)
-    test.que = test_que
-    test.ans = test_ans
-    test.save()
+
+    if "update" in request.POST:
+      test_que=request.POST.get('test_que')
+      test_ans=request.POST.get('test_ans')
+      test.que = test_que
+      test.ans = test_ans
+      test.save()
+    elif "delete" in request.POST:
+      test.delete()
     return HttpResponseRedirect(reverse('test:history'))
