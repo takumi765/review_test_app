@@ -3,7 +3,7 @@
 {% block content %}
 <!-- メニューに戻る -->
 <form method="get" action="{% url 'test:index' %}">
-  <button>戻る</button>
+  <button type="submit" class="btn btn-secondary">戻る</button>
 </form>
 
 <div>
@@ -17,7 +17,7 @@
         <form method="post", action="{% url 'test:history' %}">
           {% csrf_token %}
           <input type="hidden" name="test_id" value="{{ test.id }}">
-          <button type="submit">編集する</button>
+          <button type="submit" class="btn btn-warning">編集する</button>
         </form>
       </li>
   </ul>

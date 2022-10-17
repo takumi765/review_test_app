@@ -3,7 +3,7 @@
 {% block content %}
 <!-- メニューに戻る -->
 <form method="get" action="{% url 'test:history' %}">
-  <button>戻る</button>
+  <button type="submit" class="btn btn-secondary">戻る</button>
 </form>
 <h3 style="padding-top: 10px;">選択したテストの内容</h3>
 <div>
@@ -30,8 +30,8 @@
     </div>
   </div>
   <!-- 送信ボタン -->
-  <button type="submit" name="update">更新</button>
-  <button type="submit" name="delete">削除</button>
+  <button type="submit" class="btn btn-primary" name="update">更新</button>
+  <button type="submit" class="btn btn-danger" name="delete">削除</button>
 </form>
 
 

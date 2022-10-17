@@ -7,12 +7,12 @@
   {% csrf_token %}
   <input type="text", placeholder="問題文を入力してください", name="question">
   <input type="text", placeholder="解答を入力してください", name="answer">
-  <button type="submit">テストを追加</button>
+  <button type="submit" class="btn btn-primary">テストを追加</button>
 </form>
 
 <!-- メニューに戻る -->
 <form method="get" action="{% url 'test:index' %}">
-  <button>戻る</button>
+  <button type="submit" class="btn btn-secondary">戻る</button>
 </form>
 
 

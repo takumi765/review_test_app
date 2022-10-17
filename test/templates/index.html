@@ -2,15 +2,24 @@
 
 {% block content %}
 <!-- createページへ -->
-<form method="get" action="{% url 'test:create' %}">
-  <button>テストを作る</button>
-</form>
+<div style="margin: 10px;">
+  <form method="get" action="{% url 'test:create' %}">
+    <button type="submit" class="btn btn-primary">テストを作る</button>
+  </form>
+</div>
+
 <!-- examページへ -->
-<form method="get" action="{% url 'test:exam' %}">
-  <button>テストを始める</button>
-</form>
+<div style="margin: 10px;">
+  <form method="get" action="{% url 'test:exam' %}">
+    <button type="submit" class="btn btn-danger">テストを始める</button>
+  </form>
+</div>
+
 <!-- historyページへ -->
-<form method="get" action="{% url 'test:history' %}">
-  <button>登録した問題</button>
-</form>
+<div style="margin: 10px;">
+  <form method="get" action="{% url 'test:history' %}">
+    <button type="submit" class="btn btn-success">登録した問題</button>
+  </form>
+</div>
+
 {% endblock %}

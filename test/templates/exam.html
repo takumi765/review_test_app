@@ -3,7 +3,7 @@
 {% block content %}
 <!-- メニューに戻る -->
 <form method="get" action="{% url 'test:index' %}">
-  <button>戻る</button>
+  <button type="submit" class="btn btn-secondary">戻る</button>
 </form>
 <h3>問題</h3>
 {{test.que}}
@@ -19,10 +19,10 @@
   <form method="post" action="{%url 'test:exam' %}">
     {% csrf_token %}
     <input type="hidden" name="test_id" value="{{test.id}}">
-    <button type="submit" name="correct">正解</button>
-    <button type="submit" name="uncorrect">不正解</button>
+    <button type="submit" class="btn btn-primary" name="correct">正解</button>
+    <button type="submit" class="btn btn-danger" name="uncorrect">不正解</button>
   </form>
 </div>
 
-<button class="OK">解答を見る</button>
+<button type="submit" class="btn btn-primary">解答を見る</button>
 {% endblock %}
