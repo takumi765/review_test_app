@@ -1,12 +1,14 @@
 from random import randint, random
 from django.shortcuts import redirect, render
 from django.http import HttpResponseRedirect
+from django.utils import timezone
 from django.urls import reverse
 from .models import Test
 
 def index(request):
   if request.method == 'GET':
-    return render(request, 'index.html')
+    param = {'date': timezone.now, 'time': timezone.timedelta}
+    return render(request, 'index.html', param)
 
 def create(request):
   if request.method == 'GET':

@@ -1,24 +1,24 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
+<h1 style="font-size: 40px; margin-bottom: 3rem;"><b>テストを作る</b></h1>
 <!-- 問題をdbに追加する -->
 <form method="post" action="{% url 'test:create' %}">
   {% csrf_token %}
   <div class="mb-3">
-    <label for="exampleInputEmail1" class="form-label" style="font-size: 20px;">問題</label>
-    <textarea  rows="5" cols="50"  class="form-control" placeholder="問題文を入力してください" name="question"></textarea>
+    <label for="exampleInputEmail1" class="form-label" style="font-size: 25px;">問題</label>
+    <textarea  rows="5" cols="50"  class="form-control" placeholder="問題文を入力してください" name="question" style="font-size: 20px;"></textarea>
   </div>
   <div class="mb-3">
-    <label for="exampleInputPassword1" class="form-label" style="font-size: 20px;">解答</label>
-    <textarea  rows="5" cols="50"  class="form-control" placeholder="解答を入力してください", name="answer"></textarea>
+    <label for="exampleInputPassword1" class="form-label" style="font-size: 25px;">解答</label>
+    <textarea  rows="5" cols="50"  class="form-control" placeholder="解答を入力してください", name="answer" style="font-size: 20px;"></textarea>
   </div>
-  <button type="submit" class="btn btn-primary" style="margin: 0.5rem;">テストを追加</button>
+  <button type="submit" class="btn btn-primary" style="margin: 0.5rem; font-size: 25px;">テストを追加</button>
 </form>
 
 <!-- メニューに戻る -->
 <form method="get" action="{% url 'test:index' %}">
-  <button type="submit" class="btn btn-secondary" style="margin: 0.5rem;">戻る</button>
+  <button type="submit" class="btn btn-secondary" style="margin: 0.5rem; font-size: 25px;">戻る</button>
 </form>
 
 

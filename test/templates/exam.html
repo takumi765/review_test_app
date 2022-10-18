@@ -1,17 +1,19 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<h1 style="font-size: 40px; margin-bottom: 3rem;"><b>テストする</b></h1>
+
 <!-- メニューに戻る -->
 <form method="get" action="{% url 'test:index' %}">
-  <button type="submit" class="btn btn-secondary">戻る</button>
+  <button type="submit" class="btn btn-secondary" style="font-size: 20px;">戻る</button>
 </form>
 
 <!-- 問題部分 -->
 <div class="card" style="margin: 1rem; padding: 10px;">
-  <h5 class="card-header">問題</h5>
+  <h5 class="card-header"><div style="font-size: 25px;">問題</div><div style="text-align: right; font-size: 15px;">正答率：{{percent|floatformat:2}}%</div></h5>
   <div class="card-body">
     <h5 class="card-title"></h5>
-    <p class="card-text">{{test.que}}</p>
+    <p class="card-text" style="font-size: 20px;">{{test.que}}</p>
   </div>
 </div>
 
@@ -20,43 +22,27 @@
   <div v-show="!isActive">
     <!-- 解答部分 -->
     <div class="card" style="margin: 1rem; padding: 10px;">
-      <h5 class="card-header">解答</h5>
+      <h5 class="card-header" style="font-size: 25px;">解答</h5>
       <div class="card-body">
         <h5 class="card-title"></h5>
-        <p class="card-text" style="color: red;">{{test.ans}}</p>
+        <p class="card-text" style="color: red; font-size: 20px;">{{test.ans}}</p>
       </div>
-      <p>
+      <p class="info">
         正答率：{{percent|floatformat:2}}%<br><!-- 小数点第二位まで表示する -->
         出題数：{{test.total}}
       </p>
       <form method="post" action="{%url 'test:exam' %}">
         {% csrf_token %}
         <input type="hidden" name="test_id" value="{{test.id}}">
-        <button type="submit" class="btn btn-primary" name="correct">正解</button>
-        <button type="submit" class="btn btn-danger" name="uncorrect">不正解</button>
+        <button type="submit" class="btn btn-primary" name="correct" style="font-size: 20px;">正解</button>
+        <button type="submit" class="btn btn-danger" name="uncorrect" style="font-size: 20px;">不正解</button>
       </form>
     </div>
   </div>
-  <button type="submit" class="btn btn-primary" @click="changeShow">解答を見る</button>
+  <button type="submit" class="btn btn-primary" @click="changeShow" style="font-size: 25px;">解答を見る</button>
 </div>
 
 {% block script %}
 {% endblock script %}
-
-<script src="https://cdn.jsdelivr.net/npm/vue@2.6.11"></script>
-
-<script>
-  new Vue({
-    el: '#app',
-    data: {
-      isActive: true
-    },
-    methods: {
-      changeShow() {
-        this.isActive = !this.isActive
-      }
-    }
-  })
-</script>
 
 {% endblock %}

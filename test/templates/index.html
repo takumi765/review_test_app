@@ -3,6 +3,8 @@
 {% block content %}
 
 <div style="text-align: center;">
+  <h1 style="text-align: center; font-size: 50px; margin-bottom: 5rem;">{{ date|date:"Y年 m月 d日"}}</h1>
+
   <!-- createページへ -->
   <div style="margin: 10px;">
     <form method="get" action="{% url 'test:create' %}">
