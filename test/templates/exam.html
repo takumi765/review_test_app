@@ -5,24 +5,58 @@
 <form method="get" action="{% url 'test:index' %}">
   <button type="submit" class="btn btn-secondary">戻る</button>
 </form>
-<h3>問題</h3>
-{{test.que}}
 
-<!-- 初期画面は非表示 -->
-<div>
-  <h3>解答</h3>
-  {{test.ans}}
-  <h3>正答率</h3>
-  正解数：{{test.correct}}<br>
-  出題数：{{test.total}}<br>
-  {{percent|floatformat:2}}%<!-- 小数点第二位まで表示する -->
-  <form method="post" action="{%url 'test:exam' %}">
-    {% csrf_token %}
-    <input type="hidden" name="test_id" value="{{test.id}}">
-    <button type="submit" class="btn btn-primary" name="correct">正解</button>
-    <button type="submit" class="btn btn-danger" name="uncorrect">不正解</button>
-  </form>
+<!-- 問題部分 -->
+<div class="card" style="margin: 1rem; padding: 10px;">
+  <h5 class="card-header">問題</h5>
+  <div class="card-body">
+    <h5 class="card-title"></h5>
+    <p class="card-text">{{test.que}}</p>
+  </div>
 </div>
 
-<button type="submit" class="btn btn-primary">解答を見る</button>
+<!-- 初期画面は非表示 -->
+<div id="app">
+  <div v-show="!isActive">
+    <!-- 解答部分 -->
+    <div class="card" style="margin: 1rem; padding: 10px;">
+      <h5 class="card-header">解答</h5>
+      <div class="card-body">
+        <h5 class="card-title"></h5>
+        <p class="card-text" style="color: red;">{{test.ans}}</p>
+      </div>
+      <p>
+        正答率：{{percent|floatformat:2}}%<br><!-- 小数点第二位まで表示する -->
+        出題数：{{test.total}}
+      </p>
+      <form method="post" action="{%url 'test:exam' %}">
+        {% csrf_token %}
+        <input type="hidden" name="test_id" value="{{test.id}}">
+        <button type="submit" class="btn btn-primary" name="correct">正解</button>
+        <button type="submit" class="btn btn-danger" name="uncorrect">不正解</button>
+      </form>
+    </div>
+  </div>
+  <button type="submit" class="btn btn-primary" @click="changeShow">解答を見る</button>
+</div>
+
+{% block script %}
+{% endblock script %}
+
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.11"></script>
+
+<script>
+  new Vue({
+    el: '#app',
+    data: {
+      isActive: true
+    },
+    methods: {
+      changeShow() {
+        this.isActive = !this.isActive
+      }
+    }
+  })
+</script>
+
 {% endblock %}

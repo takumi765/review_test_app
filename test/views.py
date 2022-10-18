@@ -54,12 +54,16 @@ def history(request):
     """ テストidを取得しデータを格納してupdateに送る """
     test_id = request.POST.get('test_id')
     test = Test.objects.get(id=test_id)
-    param = {'test': {}}
+    param = {'test': {}, 'percent': {}}
     param['test']['id'] = test_id
     param['test']['que'] = test.que
     param['test']['ans'] = test.ans
     param['test']['total'] = test.total
     param['test']['correct'] = test.correct
+    if test.total == 0:
+      param["percent"]=0
+    else:
+      param["percent"]=(test.correct/test.total)*100
     return render(request, 'update.html', param)
 
 def update(request):

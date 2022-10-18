@@ -12,16 +12,18 @@
   <title>Todo</title>
 </head>
 <body style="background-color: #faebd7;">
+  <!-- ヘッダー -->
   <header>
     <nav class="navbar navbar-light bg-light">
       <div class="container-fluid">
         <a class="navbar-brand" href="/" style="font-size: 40px;">
-          <img src="" alt="" width="100%" height="60" class="d-inline-block align-text-top">
+          <img src="../static/img.png" alt="" width="10%" height="" class="d-inline-block align-text-top">
           復習テスト
         </a>
       </div>
     </nav>
   </header>
+  <!-- ボディ -->
   <div class="container">
     <div class="row">
       <div class="col-sm-10 mx-auto mt-4">
@@ -30,12 +32,11 @@
       </div>
     </div>
   </div>
+  
+  {% block script %}
+  {% endblock script %}
   <!-- vue cdn -->
-  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14"></script>
-      <!-- Vue.createApp(App)が読み込まれなかったため追加 -->
-  <script src="https://unpkg.com/vue@3"></script>
-  <!-- cookkie cdn -->
-  <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.0/dist/js.cookie.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.11"></script>
   <!-- js -->
   <script src="{% static 'main.js' %}"></script>
 </body>
