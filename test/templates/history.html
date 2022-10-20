@@ -12,13 +12,13 @@
   <!-- ループで全部表示する -->
   {% for test in tests_list %}
   <!-- テストカード -->
-  <div class="card" style="width: 23rem; margin: 5px; text-align: left;">
+  <div class="card box" style="width: 23rem; margin: 5px; text-align: left;">
     <div class="card-body">
       <p class="card-text">{{ test.que }}</p>
       <form method="post", action="{% url 'test:history' %}">
         {% csrf_token %}
         <input type="hidden" name="test_id" value="{{ test.id }}">
-        <button type="submit" class="btn btn-warning">編集する</button>
+        <button type="submit" class="btn btn-warning" ><img src="../static/img/settings.png" width="25px" ></button>
       </form>
     </div>
   </div>
