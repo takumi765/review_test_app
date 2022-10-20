@@ -1,7 +1,9 @@
+/* テストの正答率の情報 */
 .info {
     font-size: 15px;
 }
 
+/* 登録したテスト画面 */
 .testcard{
     display: flex;
     flex-wrap: wrap;
@@ -21,4 +23,12 @@
     width: 40px;
     height: 40px;
     text-align: center;
+}
+
+/* ポップアップ */
+.modal-header, .modal-body {
+    padding: 5px 25px;
+}
+.modal-header {
+border-bottom: 1px solid #ddd;
 }

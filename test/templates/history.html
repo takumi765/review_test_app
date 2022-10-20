@@ -3,6 +3,18 @@
 {% block content %}
 <h1 style="font-size: 40px; margin-bottom: 3rem;"><b>登録した問題</b></h1>
 
+<div id="app">
+  <button v-on:click="show" class="button">show!</button>
+  <modal name="hello-world" :draggable="true" :resizable="true">
+    <div class="modal-header">
+      <h2>Modal title</h2>
+    </div>
+    <div class="modal-body">
+      <p>you're reading this text in a modal!</p>
+      <button v-on:click="hide">閉じる</button>
+    </div>  
+  </modal>
+</div>
 <!-- メニューに戻る -->
 <form method="get" action="{% url 'test:index' %}">
   <button type="submit" class="btn btn-secondary" style="font-size: 20px;">戻る</button>
@@ -24,4 +36,7 @@
   </div>
   {% endfor %}
 </div>
+
+
+
 {% endblock %}
