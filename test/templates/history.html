@@ -8,21 +8,20 @@
   <button type="submit" class="btn btn-secondary" style="font-size: 20px;">戻る</button>
 </form>
 
-<div>
+<div class="testcard">
+  <!-- ループで全部表示する -->
   {% for test in tests_list %}
-  <ul>
-      <li>{{ test.que }}</li>
-      <li>{{ test.ans }}</li>
-      <li>総出題回数：{{ test.total }}</li>
-      <li>正解回数：{{ test.correct }}</li>
-      <li>
-        <form method="post", action="{% url 'test:history' %}">
-          {% csrf_token %}
-          <input type="hidden" name="test_id" value="{{ test.id }}">
-          <button type="submit" class="btn btn-warning">編集する</button>
-        </form>
-      </li>
-  </ul>
+  <!-- テストカード -->
+  <div class="card" style="width: 23rem; margin: 5px; text-align: left;">
+    <div class="card-body">
+      <p class="card-text">{{ test.que }}</p>
+      <form method="post", action="{% url 'test:history' %}">
+        {% csrf_token %}
+        <input type="hidden" name="test_id" value="{{ test.id }}">
+        <button type="submit" class="btn btn-warning">編集する</button>
+      </form>
+    </div>
+  </div>
   {% endfor %}
 </div>
 {% endblock %}

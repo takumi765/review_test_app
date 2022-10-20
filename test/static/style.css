@@ -1,3 +1,10 @@
 .info {
     font-size: 15px;
 }
+
+.testcard{
+    display: flex;
+    flex-wrap: wrap;
+    text-align: center;
+    justify-content: space-between;
+}
