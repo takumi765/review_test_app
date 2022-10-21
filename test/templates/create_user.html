@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block title %}アカウント登録{% endblock title %}
+{% block content %}
+
+{% if form.errors %}
+{{ form.errors }}
+{% endif %}
+
+<form method="post" action="{% url 'test:create_user' %}">{% csrf_token %}
+    <div class="mb-3">
+        <label class="form-label">ユーザ名</label>
+        <input class="form-control" name="name" type="text" />
+    </div>
+    <div class="mb-3">
+        <label class="form-label">パスワード(半角英数字)</label>
+        <input name="password" type="password" class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-primary">登録</button>
+</form>
+<a href="{% url 'test:login' %}">ログイン画面へ</a>
+{% endblock content %}
