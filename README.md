@@ -2,6 +2,6 @@
 
 
 ## 起動手順
-<code>docker-compose up -d</code>
+<code>docker-compose up</code>
 
 http://localhost:8888/
