@@ -16,6 +16,7 @@
     height: 80px;
 }
 .box button{
+    background-color: cadetblue;
     padding: 0;
     position: absolute;
     left: 300px;
@@ -23,6 +24,14 @@
     width: 40px;
     height: 40px;
     text-align: center;
+    background-color: cadetblue;
+    border-color: black;
+    border-radius: 50%;
+}
+
+.box button:hover{
+    opacity: 70%;
+    background-color: cadetblue;
 }
 
 /* ポップアップ */

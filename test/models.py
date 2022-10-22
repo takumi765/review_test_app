@@ -17,6 +17,8 @@ class Test(models.Model):
   total = models.IntegerField(default=0)
   ## testの正解回数
   correct = models.IntegerField(default=0)
+  ## testの正答率
+  percent = models.IntegerField(default=0)
   user = models.ForeignKey(User, default=1, on_delete=models.CASCADE)
   # 公開テストか非公開テストか
   visibility = models.CharField(max_length=20, default='private')
