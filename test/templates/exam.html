@@ -10,7 +10,7 @@
 
 <!-- 問題部分 -->
 <div class="card" style="margin: 1rem; padding: 10px;">
-  <h5 class="card-header"><div style="font-size: 25px;">問題</div><div style="text-align: right; font-size: 15px;">正答率：{{percent|floatformat:2}}%</div></h5>
+  <h5 class="card-header"><div style="font-size: 25px;">問題</div><div style="text-align: right; font-size: 15px;">正答率：{{test.percent|floatformat:2}}%</div></h5>
   <div class="card-body">
     <h5 class="card-title"></h5>
     <p class="card-text" style="font-size: 20px;">{{test.que}}</p>
@@ -28,7 +28,7 @@
         <p class="card-text" style="color: red; font-size: 20px;">{{test.ans}}</p>
       </div>
       <p class="info">
-        正答率：{{percent|floatformat:2}}%<br><!-- 小数点第二位まで表示する -->
+        正答率：{{test.percent|floatformat:2}}%<br><!-- 小数点第二位まで表示する -->
         出題数：{{test.total}}
       </p>
       <form method="post" action="{%url 'test:exam' %}">

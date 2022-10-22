@@ -3,47 +3,6 @@
 {% block content %}
 <h1 style="font-size: 40px; margin-bottom: 3rem;"><b>登録した問題</b></h1>
 
-
-<div id="app">
-  <button v-on:click="show" class="button">show!</button>
-  
-  <!-- ポップアップで表示される -->
-  <modal name="hello-world" :draggable="true" :resizable="true">
-    <div class="modal-header">
-      <h2>選択したテストの内容</h2>
-    </div>
-    <div class="modal-body">
-      <p>you're reading this text in a modal!</p>
-      <button v-on:click="hide">更新</button>
-      <button v-on:click="hide">削除</button>
-    </div>  
-  </modal>
-</div>
-
-<!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-  Launch demo modal
-</button>
-
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        ...
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div>
-    </div>
-  </div>
-</div>
-
 <!-- メニューに戻る -->
 <form method="get" action="{% url 'test:index' %}">
   <button type="submit" class="btn btn-secondary" style="font-size: 20px;">戻る</button>
@@ -56,11 +15,53 @@
   <div class="card box" style="width: 23rem; margin: 5px; text-align: left;">
     <div class="card-body">
       <p class="card-text">{{ test.que }}</p>
-      <form method="post", action="{% url 'test:history' %}">
-        {% csrf_token %}
-        <input type="hidden" name="test_id" value="{{ test.id }}">
-        <button type="submit" class="btn btn-warning" ><img src="../static/img/settings.png" width="25px" ></button>
-      </form>
+      <p>{{test.percent|floatformat:2}}%</p>
+      <!-- Button trigger modal -->
+      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#testModal{{forloop.counter0}}">
+        <img src="../static/img/settings.png" width="25px" >
+      </button>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="testModal{{forloop.counter0}}" tabindex="-1" aria-labelledby="testModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="testModalLabel">テストの詳細</h4>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" style="text-align: left;">
+          <h5>問題</h5>
+          {{test.que}}
+          <h5>解答</h5>
+          <div style="color: red;">{{test.ans}}</div>
+          <h5>記録</h5>
+          正答率：{{test.percent|floatformat:2}}%<br>
+          総出題回数：{{test.total}}
+        </div>
+        <div class="modal-footer">
+          <form method="post" action="{% url 'test:history' %}">
+            {% csrf_token %}
+            <input type="hidden" name="test_id" value="{{ test.id }}">
+            <div class="container">
+              <div class="row">
+                <div class="col">
+                  <h5>問題</h5>
+                  <textarea rows="5" cols="30" name="test_que" placeholder="問題文を入力してください" style="font-size: 20px;"></textarea>
+                </div>
+                <div class="col">
+                  <h5>解答</h5>
+                  <textarea rows="5" cols="30" name="test_ans" placeholder="解答を入力してください" style="font-size: 20px;"></textarea>
+                </div>
+              </div>
+            </div>
+            <!-- 送信ボタン -->
+            <button type="submit" class="btn btn-primary" name="update" style="margin: 0.3rem; font-size: 20px;">更新</button>
+            <button type="submit" class="btn btn-danger" name="delete" style="margin: 0.3rem; font-size: 20px;">削除</button>
+          </form>
+        </div>
+      </div>
     </div>
   </div>
   {% endfor %}
