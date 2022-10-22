@@ -3,12 +3,48 @@ from django.shortcuts import redirect, render
 from django.http import HttpResponseRedirect
 from django.utils import timezone
 from django.urls import reverse
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import User
+from django.contrib import messages
+
 from .models import Test
+from .forms import UserForm
+
+def login_view(request):
+  if request.method == 'GET':
+    return render(request, 'login.html')
+  if request.method == 'POST':
+    name = request.POST.get('name')
+    password = request.POST.get('password')
+    user = authenticate(username=name, password=password)
+    if user is not None:
+        login(request, user)
+        return HttpResponseRedirect(reverse('test:index'))  
+    messages.error(request, '入力情報に間違いがあります')
+    return HttpResponseRedirect('.')
+
+def create_user(request):
+  if request.method == 'GET':
+    return render(request, 'create_user.html')
+  if request.method == 'POST':
+    form = UserForm(request.POST)
+    if form.is_valid():
+      User.objects.create_user(username=request.POST.get('name'), password=request.POST.get('password'))
+      return HttpResponseRedirect(reverse('test:login'))
+    print(form.errors)
+    return render(request, 'create_user.html', {'form': form})
+  
+def logout_account(request):
+  logout(request)
+  return HttpResponseRedirect(reverse('test:index'))
 
 def index(request):
   if request.method == 'GET':
-    param = {'date': timezone.now, 'time': timezone.timedelta}
-    return render(request, 'index.html', param)
+    if request.user.is_authenticated:
+      param = {'date': timezone.now, 'time': timezone.timedelta}
+      return render(request, 'index.html', param)
+    return HttpResponseRedirect(reverse('test:login'))
+    
 
 def create(request):
   if request.method == 'GET':
@@ -17,7 +53,8 @@ def create(request):
     """ 入力された問題文と解答をdbに登録する """
     question = request.POST.get('question')
     answer = request.POST.get('answer')
-    Test.objects.create(que=question, ans=answer)
+    user = request.user
+    Test.objects.create(que=question, ans=answer, user=user)
     return render(request, 'create.html')
 
 def exam(request):
