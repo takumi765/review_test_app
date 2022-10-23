@@ -8,7 +8,7 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 
 from .models import Test
-from .forms import UserForm
+from .forms import TestForm, UserForm
 
 def login_view(request):
   if request.method == 'GET':
@@ -45,17 +45,17 @@ def index(request):
       return render(request, 'index.html', param)
     return HttpResponseRedirect(reverse('test:login'))
     
-
 def create(request):
   if request.method == 'GET':
     return render(request, 'create.html')
   elif request.method == 'POST':
-    """ 入力された問題文と解答をdbに登録する """
-    question = request.POST.get('question')
-    answer = request.POST.get('answer')
-    user = request.user
-    Test.objects.create(que=question, ans=answer, user=user)
-    return render(request, 'create.html')
+    form = TestForm(request.POST)
+    if form.is_valid():
+      """ 入力された問題文と解答をdbに登録する """
+      Test.objects.create(que=request.POST.get('question'), ans=request.POST.get('answer'), user=request.user)
+      return HttpResponseRedirect(reverse('test:create'))
+    print(form.errors)
+    return render(request, 'create.html', {'form': form})
 
 def exam(request):
   if request.method == 'GET':
@@ -92,11 +92,17 @@ def history(request):
     test = Test.objects.get(id=test_id)
 
     if "update" in request.POST:
-      test_que=request.POST.get('test_que')
-      test_ans=request.POST.get('test_ans')
-      test.que = test_que
-      test.ans = test_ans
-      test.save()
+      form = TestForm(request.POST)
+      if form.is_valid():
+        """ 入力された問題文と解答を上書きする """
+        question=request.POST.get('question')
+        answer=request.POST.get('answer')
+        test.que = question
+        test.ans = answer
+        test.save()
+        return HttpResponseRedirect(reverse('test:history'))
+      print(form.errors)
+      return HttpResponseRedirect(reverse('test:history'))
     elif "delete" in request.POST:
       test.delete()
     return HttpResponseRedirect(reverse('test:history'))

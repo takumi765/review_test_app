@@ -8,7 +8,7 @@
   <button type="submit" class="btn btn-secondary" style="font-size: 20px;">戻る</button>
 </form>
 
-<div class="testcard">
+<div id="app" class="testcard">
   <!-- ループで全部表示する -->
   {% for test in tests_list %}
   <!-- テストカード -->
@@ -31,6 +31,7 @@
           <h4 class="modal-title" id="testModalLabel">テストの詳細</h4>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
+        
         <div class="modal-body" style="text-align: left;">
           <h5>問題</h5>
           {{test.que}}
@@ -40,6 +41,7 @@
           正答率：{{test.percent|floatformat:2}}%<br>
           総出題回数：{{test.total}}
         </div>
+
         <div class="modal-footer">
           <form method="post" action="{% url 'test:history' %}">
             {% csrf_token %}
@@ -48,16 +50,18 @@
               <div class="row">
                 <div class="col">
                   <h5>問題</h5>
-                  <textarea rows="5" cols="30" name="test_que" placeholder="問題文を入力してください" style="font-size: 20px;"></textarea>
+                  <textarea rows="5" cols="30" name="question" v-model="question" placeholder="問題文を入力してください" style="font-size: 20px;"></textarea>
+                  <div v-if="check_que" style="color: red;">問題を入力してください</div>
                 </div>
                 <div class="col">
                   <h5>解答</h5>
-                  <textarea rows="5" cols="30" name="test_ans" placeholder="解答を入力してください" style="font-size: 20px;"></textarea>
+                  <textarea rows="5" cols="30" name="answer" v-model="answer" placeholder="解答を入力してください" style="font-size: 20px;"></textarea>
+                  <div v-if="check_ans" style="color: red;">解答を入力してください</div>
                 </div>
               </div>
             </div>
             <!-- 送信ボタン -->
-            <button type="submit" class="btn btn-primary" name="update" style="margin: 0.3rem; font-size: 20px;">更新</button>
+            <button type="submit" :disabled="!sendable" class="btn btn-primary" name="update" style="margin: 0.3rem; font-size: 20px;">更新</button>
             <button type="submit" class="btn btn-danger" name="delete" style="margin: 0.3rem; font-size: 20px;">削除</button>
           </form>
         </div>

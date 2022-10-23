@@ -15,27 +15,45 @@ def check_password_length(value):
 def check_password_re(value):
     if not re.compile(r'^[a-zA-Z0-9]+$').search(value):
         raise ValidationError('パスワード: 半角英数字で入力してください')
+
+def check_question_length(value):
+    question_length = len(value)
+    if question_length < 1:
+        raise ValidationError('問題文を入力してください')
     
+def check_answer_length(value):
+    answer_length = len(value)
+    if answer_length < 1:
+        raise ValidationError('問題文を入力してください')
+
 class UserForm(forms.Form):
-    name = forms.CharField()
-    password = forms.CharField()
+    name = forms.CharField(
+        label='name',
+        required=True,
+        max_length=100,
+        validators=[check_name_length],
+    )
+    password = forms.CharField(
+        label='password',
+        required=True,
+        max_length=100,
+        validators=[check_password_length, check_password_re],
+    )
     
-    def clean_name(self):
-        name = self.cleaned_data['name']
-        if len(name) < 4 or len(name) > 50:
-            print ('clean_name')
-            raise ValidationError('ユーザ名: 4~8文字で入力してください')
-        return name
-    
-    def clean_password(self):
-        password = self.cleaned_data['password']
-        error_msg = []
-        if len(password) < 8 or len(password) > 50:
-            print('パスワード長さだめ')
-            error_msg.append(ValidationError('パスワード: 8~50文字で入力してください'))
-        if not re.search(r'^[a-zA-z0-9]+$', password):
-            print('パスワード文字だめ')
-            error_msg.append(ValidationError('パスワード: 半角英数字で入力してください'))
-        if error_msg:
-            raise ValidationError(error_msg)
-        return password
+class TestForm(forms.Form):
+    """ 問題文のバリデーション """
+    question = forms.CharField(
+        label='question',
+        required=True,
+        max_length=500,
+        widget=forms.Textarea,
+        validators=[check_question_length],
+    )
+    """ 解答のバリデーション """
+    answer = forms.CharField(
+        label='answer',
+        required=True,
+        max_length=500,
+        widget=forms.Textarea,
+        validators=[check_answer_length],
+    )
