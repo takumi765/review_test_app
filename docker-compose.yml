@@ -5,6 +5,6 @@ services:
     build: .
     volumes:
       - .:/django-vue.js-docker_sample
-    command: sh -c "python3 manage.py migrate&&python3 manage.py runserver 0.0.0.0:8888"
+    command: sh -c "python3 manage.py makemigrations && python3 manage.py migrate && python3 manage.py runserver 0.0.0.0:8888"
     ports:
       - "8888:8888"
