@@ -59,7 +59,7 @@ def create(request):
 
 def exam(request):
   if request.method == 'GET':
-    """ dbに登録されたデータをランダムに取り出す """
+    """ dbに登録されたデータをユーザ毎にフィルタリングしてランダムに取り出す """
     test = Test.objects.filter(user=request.user).order_by('?').first()
     return render(request, 'exam.html', {'test': test})
     
