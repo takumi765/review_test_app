@@ -19,7 +19,7 @@ def login_view(request):
     user = authenticate(username=name, password=password)
     if user is not None:
         login(request, user)
-        return HttpResponseRedirect(reverse('test:index'))  
+        return HttpResponseRedirect(reverse('test:index'), {'user': user})  
     messages.error(request, '入力情報に間違いがあります')
     return HttpResponseRedirect('.')
 
@@ -60,8 +60,7 @@ def create(request):
 def exam(request):
   if request.method == 'GET':
     """ dbに登録されたデータをランダムに取り出す """
-    counter = Test.objects.all().count()
-    test = Test.objects.get(id=randint(1, counter))
+    test = Test.objects.filter(user=request.user).order_by('?').first()
     return render(request, 'exam.html', {'test': test})
     
   elif request.method == 'POST':
@@ -83,7 +82,7 @@ def history(request):
   if request.method == 'GET':
     """ dbに登録された全てのテストを出力する """
     tests_list = {}
-    tests = Test.objects.all()
+    tests = Test.objects.filter(user=request.user)
     tests_list["tests_list"] = tests
     return render(request, 'history.html', tests_list)
   elif request.method == 'POST':

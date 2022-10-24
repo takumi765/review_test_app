@@ -14,7 +14,7 @@
   <!-- テストカード -->
   <div class="card box" style="width: 23rem; margin: 5px; text-align: left;">
     <div class="card-body">
-      <p class="card-text">{{ test.que }}</p>
+      <p class="card-text">{{ test.que }}:{{test.user}}</p>
       <p>{{test.percent|floatformat:2}}%</p>
       <!-- Button trigger modal -->
       <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#testModal{{forloop.counter0}}">
