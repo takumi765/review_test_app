@@ -4,22 +4,43 @@
 <h1 style="font-size: 40px; margin-bottom: 3rem;"><b>テストを作る</b></h1>
 
 <!-- errorメッセージ -->
-{% if form.errors %}
+<!-- {% if form.errors %}
 {{ form.errors }}
-{% endif %}
+{% endif %} -->
+
 <!-- 問題をdbに追加する -->
-<form method="post" action="{% url 'test:create' %}">
-  {% csrf_token %}
-  <div class="mb-3">
-    <label for="exampleInputEmail1" class="form-label" style="font-size: 25px;">問題</label>
-    <textarea  rows="5" cols="50"  class="form-control" placeholder="問題文を入力してください" name="question" type="question" style="font-size: 20px;"></textarea>
-  </div>
-  <div class="mb-3">
-    <label for="exampleInputPassword1" class="form-label" style="font-size: 25px;">解答</label>
-    <textarea  rows="5" cols="50"  class="form-control" placeholder="解答を入力してください", name="answer" type="answer" style="font-size: 20px;"></textarea>
-  </div>
-  <button type="submit" class="btn btn-primary" style="margin: 0.5rem; font-size: 25px;">テストを追加</button>
-</form>
+<div id="app">
+  <form method="post" action="{% url 'test:create' %}">
+    {% csrf_token %}
+    <!-- 科目のプルダウンメニュー -->
+    <div class="mb-3">
+      <label class="form-label" style="font-size: 25px;">科目<br>
+        <input name="subject" placeholder="未分類" type="subject" list="subject" style="font-size: 20px;">
+        <datalist id="subject">
+          もしくはリストから選択
+          <select>
+          {% for subject in tests_list %}
+            <option value="{{ subject }}"></option>
+          {% endfor %}
+          </select>
+        </datalist>
+      </label>
+    </div>
+    <!-- 問題・解答 -->
+    <div class="mb-3">
+      <label class="form-label" style="font-size: 25px;">問題</label>
+      <textarea  rows="5" cols="50" class="form-control" placeholder="問題文を入力してください" name="question" type="question" v-model="question" style="font-size: 20px;"></textarea>
+      <div v-if="check_que" style="color: red;">問題を入力してください</div>
+    </div>
+    <div class="mb-3">
+      <label class="form-label" style="font-size: 25px;">解答</label>
+      <textarea  rows="5" cols="50" class="form-control" placeholder="解答を入力してください" name="answer" type="answer" v-model="answer" style="font-size: 20px;"></textarea>
+      <div v-if="check_ans" style="color: red;">解答を入力してください</div>
+    </div>
+    <!-- 追加ボタン -->
+    <button type="submit" :disabled="!sendable" class="btn btn-primary" style="margin: 0.5rem; font-size: 25px;">テストを追加</button>
+  </form>
+</div>
 
 <!-- メニューに戻る -->
 <form method="get" action="{% url 'test:index' %}">

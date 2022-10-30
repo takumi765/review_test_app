@@ -47,21 +47,33 @@ def index(request):
     
 def create(request):
   if request.method == 'GET':
-    return render(request, 'create.html')
+    tests_list = {}
+    tests = Test.objects.filter(user=request.user).distinct().values_list('subject', flat=True)
+    tests_list["tests_list"] = tests
+    return render(request, 'create.html', tests_list)
   elif request.method == 'POST':
     form = TestForm(request.POST)
     if form.is_valid():
       """ 入力された問題文と解答をdbに登録する """
-      Test.objects.create(que=request.POST.get('question'), ans=request.POST.get('answer'), user=request.user)
+      Test.objects.create(subject=request.POST.get('subject'), que=request.POST.get('question'), ans=request.POST.get('answer'), user=request.user)
       return HttpResponseRedirect(reverse('test:create'))
+    
     print(form.errors)
-    return render(request, 'create.html', {'form': form})
+    param = {}
+    tests = Test.objects.filter(user=request.user).distinct().values_list('subject', flat=True)
+    param['form'] = form
+    param['tests_list'] = tests
+    return render(request, 'create.html', param)
 
 def exam(request):
   if request.method == 'GET':
     """ dbに登録されたデータをユーザ毎にフィルタリングしてランダムに取り出す """
+    param={}
     test = Test.objects.filter(user=request.user).order_by('?').first()
-    return render(request, 'exam.html', {'test': test})
+    subjects = Test.objects.filter(user=request.user).distinct().values_list('subject', flat=True)
+    param['test']=test
+    param['subjects']=subjects
+    return render(request, 'exam.html', param)
     
   elif request.method == 'POST':
     """ 正解数と出題数を変更する """
@@ -81,10 +93,12 @@ def exam(request):
 def history(request):
   if request.method == 'GET':
     """ dbに登録された全てのテストを出力する """
-    tests_list = {}
+    param = {}
     tests = Test.objects.filter(user=request.user)
-    tests_list["tests_list"] = tests
-    return render(request, 'history.html', tests_list)
+    subjects = Test.objects.filter(user=request.user).distinct().values_list('subject', flat=True)
+    param["tests_list"] = tests
+    param["subjects"] = subjects
+    return render(request, 'history.html', param)
   elif request.method == 'POST':
     """ 問題のidに基づきその内容を変更する """
     test_id=request.POST.get('test_id')
@@ -94,8 +108,10 @@ def history(request):
       form = TestForm(request.POST)
       if form.is_valid():
         """ 入力された問題文と解答を上書きする """
+        subject=request.POST.get('subject')
         question=request.POST.get('question')
         answer=request.POST.get('answer')
+        test.subject = subject
         test.que = question
         test.ans = answer
         test.save()

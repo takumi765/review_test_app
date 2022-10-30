@@ -10,6 +10,8 @@ class UserInfo(models.Model):
   visibility = models.CharField(max_length=20, default='private')
 
 class Test(models.Model):
+  ## testの科目
+  subject = models.CharField(max_length=255, default='')
   ## testのタイトル・解答
   que = models.CharField(max_length=255)
   ans = models.CharField(max_length=255)
@@ -19,6 +21,7 @@ class Test(models.Model):
   correct = models.IntegerField(default=0)
   ## testの正答率
   percent = models.IntegerField(default=0)
+  ## ユーザ
   user = models.ForeignKey(User, default=1, on_delete=models.CASCADE)
   # 公開テストか非公開テストか
   visibility = models.CharField(max_length=20, default='private')
