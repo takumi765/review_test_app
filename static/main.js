@@ -2,6 +2,7 @@ Vue.use(window["vue-js-modal"].default);
 
 new Vue({
   el: '#app',
+  delimiters: ['[[', ']]'],
   data: {
     isActive: true,
     question: '',
