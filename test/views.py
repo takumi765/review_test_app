@@ -1,4 +1,3 @@
-from random import randint, random
 from django.shortcuts import redirect, render
 from django.http import HttpResponseRedirect
 from django.utils import timezone
@@ -94,7 +93,7 @@ def history(request):
   if request.method == 'GET':
     """ dbに登録された全てのテストを出力する """
     param = {}
-    tests = Test.objects.filter(user=request.user)
+    tests = Test.objects.filter(user=request.user, subject='英語')
     subjects = Test.objects.filter(user=request.user).distinct().values_list('subject', flat=True)
     param["tests_list"] = tests
     param["subjects"] = subjects

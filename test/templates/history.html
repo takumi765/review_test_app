@@ -9,10 +9,11 @@
 </form>
 
 <div  id="app">
+  <h1>[[val]]</h1>
   <!-- フィルタリング -->
   <div style="margin: 10px;">
     <div style="font-size: 25px;">表示項目</div>
-    <select style="font-size: 20px;">
+    <select style="font-size: 20px;" @change="detectChange">
       <option value="" selected>全て</option>
       {% for subject in subjects %}
         <option>{{ subject }}</option>
@@ -99,4 +100,8 @@
     {% endfor %}
   </div>
 </div>
+
+{% block script %}
+{% endblock script %}
+
 {% endblock %}
