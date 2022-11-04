@@ -91,9 +91,13 @@ def exam(request):
 
 def history(request):
   if request.method == 'GET':
+    if request.headers.get("Content-Type") == "application/json":
+      print(request.body.get("subject-Type"))
+      tests = Test.objects.filter(user=request.user, subject='英語')
+    else:
+      tests = Test.objects.filter(user=request.user)
     """ dbに登録された全てのテストを出力する """
     param = {}
-    tests = Test.objects.filter(user=request.user, subject='英語')
     subjects = Test.objects.filter(user=request.user).distinct().values_list('subject', flat=True)
     param["tests_list"] = tests
     param["subjects"] = subjects

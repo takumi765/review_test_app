@@ -16,7 +16,7 @@
     <select style="font-size: 20px;" @change="detectChange">
       <option value="" selected>全て</option>
       {% for subject in subjects %}
-        <option>{{ subject }}</option>
+        <option value="{{ subject }}">{{ subject }}</option>
       {% endfor %}
     </select>
   </div>

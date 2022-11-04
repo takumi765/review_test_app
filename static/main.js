@@ -15,28 +15,25 @@ new Vue({
       this.isActive = !this.isActive;
     },
     detectChange: function(e) {
-      this.val = e.target.value;
-      // csrfトークンを定義
-     /*  const csrftoken = Cookies.get('csrftoken');
-      fetch("", {
-          method: 'post',
-          headers: {
-              'Content-Type':  'application/json',
-              'X-CSRFToken': csrftoken,
-            },
-          // htmlから入力されたtaskの情報をviews.pyに送信
-          body: JSON.stringify({
-            subject_type: e.target.value,
-            name: "bind_subject",
-          }),
-      })
+      this.val=e.target.value;
+      console.log(e.target.value);
+      var opt={
+        method: 'get',
+        headers: {
+          'Content-Type': 'application/json',
+          'subject-Type': 'ss',/* e.target.value */
+        },
+      };
+      fetch("", opt)
       .then((response) => {
           return response.json();
+      })
+      .then((tasks_list) => {
+          this.tasks = tasks_list;
       })
       .catch(error => {
           console.error('There has been a problem with your fetch operation:', error);
       });
-      console.log('Aba'); */
     },
   },
   computed: {
