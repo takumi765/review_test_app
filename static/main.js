@@ -17,23 +17,6 @@ new Vue({
     detectChange: function(e) {
       this.val=e.target.value;
       console.log(e.target.value);
-      var opt={
-        method: 'get',
-        headers: {
-          'Content-Type': 'application/json',
-          'subject-Type': 'ss',/* e.target.value */
-        },
-      };
-      fetch("", opt)
-      .then((response) => {
-          return response.json();
-      })
-      .then((tasks_list) => {
-          this.tasks = tasks_list;
-      })
-      .catch(error => {
-          console.error('There has been a problem with your fetch operation:', error);
-      });
     },
   },
   computed: {

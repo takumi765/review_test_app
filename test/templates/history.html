@@ -20,6 +20,10 @@
       {% endfor %}
     </select>
   </div>
+
+
+
+
   
   <div class="testcard">
     <!-- ループで全部表示する -->
@@ -101,7 +105,13 @@
   </div>
 </div>
 
+{{ param|json_script:"room-name" }}
+
 {% block script %}
+<script>
+  var allTest = JSON.parse(document.getElementById('room-name').textContent);
+  console.log(allTest.subjects);
+</script>
 {% endblock script %}
 
 {% endblock %}
