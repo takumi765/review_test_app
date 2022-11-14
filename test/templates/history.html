@@ -105,13 +105,7 @@
   </div>
 </div>
 
-{{ param|json_script:"room-name" }}
-
 {% block script %}
-<script>
-  var allTest = JSON.parse(document.getElementById('room-name').textContent);
-  console.log(allTest.subjects);
-</script>
 {% endblock script %}
 
 {% endblock %}

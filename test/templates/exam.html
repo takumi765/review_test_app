@@ -57,7 +57,14 @@
   <button type="submit" class="btn btn-primary" @click="changeShow" style="font-size: 25px;">解答を見る</button>
 </div>
 
+
+{{ param.test|json_script:"room-name" }}
+
 {% block script %}
+<script>
+  var allTest = JSON.parse(document.getElementById('room-name').textContent);
+  console.log(allTest.ans);
+</script>
 {% endblock script %}
 
 {% endblock %}
