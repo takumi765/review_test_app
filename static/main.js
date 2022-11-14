@@ -7,7 +7,7 @@ new Vue({
     isActive: true,
     question: '',
     answer: '',
-    val: '',
+    tests: [],
   },
   methods: {
     /* テスト画面で解答を表示させる処理 */
@@ -15,8 +15,22 @@ new Vue({
       this.isActive = !this.isActive;
     },
     detectChange: function(e) {
-      this.val=e.target.value;
-      console.log(e.target.value);
+      this.tests = [];
+      //プルダウンの値を確認する
+      //console.log(e.target.value);
+      
+      //DjangoからのデータをJSON形式で受け取る
+      var testList = JSON.parse(document.getElementById('tests_list').textContent);
+      //var testList_filtered = new Array();
+      //フィルタを掛けてデータを抽出する
+      for(let i=0;i<testList.length;i++){
+        if(e.target.value=== ''){
+          this.tests.push(testList[i]);
+        }else if(testList[i].subject === e.target.value){
+          this.tests.push(testList[i]);
+        }
+      }
+      //console.log(testList_filtered);
     },
   },
   computed: {
@@ -34,10 +48,3 @@ new Vue({
   },
 })
 
-/* モーダル画面 */
-/* var myModal = document.getElementById('myModal')
-var myInput = document.getElementById('myInput')
-
-myModal.addEventListener('shown.bs.modal', function () {
-  myInput.focus()
-}) */
