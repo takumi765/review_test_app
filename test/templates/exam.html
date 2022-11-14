@@ -58,12 +58,12 @@
 </div>
 
 
-{{ param.test|json_script:"room-name" }}
+{{ test|json_script:"room-name" }}
 
 {% block script %}
 <script>
-  var allTest = JSON.parse(document.getElementById('room-name').textContent);
-  console.log(allTest.ans);
+  var testList = JSON.parse(document.getElementById('room-name').textContent);
+  console.log(testList);
 </script>
 {% endblock script %}
 

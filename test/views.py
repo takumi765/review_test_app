@@ -71,7 +71,20 @@ def exam(request):
     param={}
     test = Test.objects.filter(user=request.user).order_by('?').first()
     subjects = Test.objects.filter(user=request.user).distinct().values_list('subject', flat=True)
-    param['test']=test
+    
+    test_list = {}
+    test_list = {
+      'id': test.id, 
+      'subject': test.subject, 
+      'que': test.que, 
+      'ans': test.ans, 
+      'total': test.total, 
+      'correct': test.correct, 
+      'percent': test.percent, 
+      'visibility': test.visibility
+    }
+    
+    param['test']=test_list
     param['subjects']=subjects
     return render(request, 'exam.html', param)
     
