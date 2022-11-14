@@ -5,6 +5,7 @@ from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib import messages
+from django.core import serializers
 
 from .models import Test
 from .forms import TestForm, UserForm
@@ -91,13 +92,34 @@ def exam(request):
 
 def history(request):
   if request.method == 'GET':
+    test_list = []
     tests = Test.objects.filter(user=request.user)
     """ dbに登録された全てのテストを出力する """
+    
+    '''
+    ## testのタイトル・解答
+    que = models.CharField(max_length=255)
+    ans = models.CharField(max_length=255)
+    ## testの出題数
+    total = models.IntegerField(default=0)
+    ## testの正解回数
+    correct = models.IntegerField(default=0)
+    ## testの正答率
+    percent = models.IntegerField(default=0)
+    user = models.ForeignKey(User, default=1, on_delete=models.CASCADE)
+    # 公開テストか非公開テストか
+    visibility = models.CharField(max_length=20, default='public')
+    '''
+    
+    for test in tests:
+      test_list.append({'que': test.que, 'ans': test.ans, 'total': test.total, 'correct': test.correct, 'percent': test.percent, 'visibility': test.visibility})
+      
     param = {}
     subjects = Test.objects.filter(user=request.user).distinct().values_list('subject', flat=True)
-    param["tests_list"] = tests
+    param["tests_list"] = test_list
     param["subjects"] = subjects
     return render(request, 'history.html', param)
+  
   elif request.method == 'POST':
     """ 問題のidに基づきその内容を変更する """
     test_id=request.POST.get('test_id')
