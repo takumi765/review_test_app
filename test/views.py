@@ -112,7 +112,7 @@ def history(request):
     '''
     
     for test in tests:
-      test_list.append({'que': test.que, 'ans': test.ans, 'total': test.total, 'correct': test.correct, 'percent': test.percent, 'visibility': test.visibility})
+      test_list.append({'id': test.id, 'subject': test.subject, 'que': test.que, 'ans': test.ans, 'total': test.total, 'correct': test.correct, 'percent': test.percent, 'visibility': test.visibility})
       
     param = {}
     subjects = Test.objects.filter(user=request.user).distinct().values_list('subject', flat=True)
