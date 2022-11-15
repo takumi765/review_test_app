@@ -8,47 +8,52 @@
   <button type="submit" class="btn btn-secondary" style="font-size: 20px;">戻る</button>
 </form>
 
-<!-- フィルタリング -->
-<div style="margin: 10px;">
-  <div style="font-size: 25px;">表示項目</div>
-  <select style="font-size: 20px;">
-    <option value="" selected>全て</option>
-    {% for subject in subjects %}
-      <option>{{ subject }}</option>
-    {% endfor %}
-  </select>
-</div>
-
-<!-- 問題部分 -->
-<div class="card" style="margin: 1rem; padding: 10px;">
-  <h5 class="card-header">
-    <div style="font-size: 25px;">問題</div>
-    <div><span class="badge bg-secondary">{{test.subject}}</span></div>
-    <div style="text-align: right; font-size: 15px;">正答率：{{test.percent|floatformat:2}}%</div>
-  </h5>
-  <div class="card-body">
-    <h5 class="card-title"></h5>
-    <p class="card-text" style="font-size: 20px;">{{test.que}}</p>
-  </div>
-</div>
 
 <!-- 初期画面は非表示 -->
 <div id="app">
+  <!-- フィルタリング -->
+  <div style="margin: 10px;">
+    <div style="font-size: 25px;">表示項目</div>
+    <select style="font-size: 20px;" @change="detectChange">
+      <option value="全て" selected>全て</option>
+      {% for subject in subjects %}
+        {% if subject == "" %}
+          <option>未分類</option>
+        {% else %}
+          <option>{{ subject }}</option>
+        {% endif %}
+      {% endfor %}
+    </select>
+  </div>
+
+  <!-- 問題部分 -->
+  <div class="card" style="margin: 1rem; padding: 10px;">
+    <h5 class="card-header">
+      <div style="font-size: 25px;">問題</div>
+      <div><span class="badge bg-secondary">[[tests[0].subject]]</span></div>
+      <div style="text-align: right; font-size: 15px;">正答率：[[tests[0].percent]]%</div>
+    </h5>
+    <div class="card-body">
+      <h5 class="card-title"></h5>
+      <p class="card-text" style="font-size: 20px;">[[tests[0].que]]</p>
+    </div>
+  </div>
+
+  <!-- 解答部分 -->
   <div v-show="!isActive">
-    <!-- 解答部分 -->
     <div class="card" style="margin: 1rem; padding: 10px;">
       <h5 class="card-header" style="font-size: 25px;">解答</h5>
       <div class="card-body">
         <h5 class="card-title"></h5>
-        <p class="card-text" style="color: red; font-size: 20px;">{{test.ans}}</p>
+        <p class="card-text" style="color: red; font-size: 20px;">[[tests[0].ans]]</p>
       </div>
       <p class="info">
-        正答率：{{test.percent|floatformat:2}}%<br><!-- 小数点第二位まで表示する -->
-        出題数：{{test.total}}
+        正答率：[[tests[0].percent]]%<br><!-- 小数点第二位まで表示する -->
+        出題数：[[tests[0].total]]
       </p>
       <form method="post" action="{%url 'test:exam' %}">
         {% csrf_token %}
-        <input type="hidden" name="test_id" value="{{test.id}}">
+        <input type="hidden" name="test_id" :value="[[ tests[0].id ]]">
         <button type="submit" class="btn btn-primary" name="correct" style="font-size: 20px;">正解</button>
         <button type="submit" class="btn btn-danger" name="uncorrect" style="font-size: 20px;">不正解</button>
       </form>
@@ -58,13 +63,9 @@
 </div>
 
 
-{{ test|json_script:"room-name" }}
+{{ tests_list|json_script:"tests_list" }}
 
 {% block script %}
-<script>
-  var testList = JSON.parse(document.getElementById('room-name').textContent);
-  console.log(testList);
-</script>
 {% endblock script %}
 
 {% endblock %}

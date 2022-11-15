@@ -69,22 +69,23 @@ def exam(request):
   if request.method == 'GET':
     """ dbに登録されたデータをユーザ毎にフィルタリングしてランダムに取り出す """
     param={}
-    test = Test.objects.filter(user=request.user).order_by('?').first()
+    tests = Test.objects.filter(user=request.user)
     subjects = Test.objects.filter(user=request.user).distinct().values_list('subject', flat=True)
     
-    test_list = {}
-    test_list = {
-      'id': test.id, 
-      'subject': test.subject, 
-      'que': test.que, 
-      'ans': test.ans, 
-      'total': test.total, 
-      'correct': test.correct, 
-      'percent': test.percent, 
-      'visibility': test.visibility
-    }
+    test_list = []
+    for test in tests:
+      test_list.append({
+        'id': test.id, 
+        'subject': test.subject, 
+        'que': test.que, 
+        'ans': test.ans, 
+        'total': test.total, 
+        'correct': test.correct, 
+        'percent': test.percent, 
+        'visibility': test.visibility
+      })
     
-    param['test']=test_list
+    param['tests_list']=test_list
     param['subjects']=subjects
     return render(request, 'exam.html', param)
     

@@ -27,10 +27,13 @@
   <div style="margin: 10px;">
     <div style="font-size: 25px;">表示項目</div>
     <select style="font-size: 20px;" @change="detectChange">
-      <option value="" selected>全て</option>
+      <option value="全て" selected>全て</option>
       {% for subject in subjects %}
-        <option value="{{ subject }}">{{ subject }}</option>
+        {% if subject != "" %}
+          <option value="{{ subject }}">{{ subject }}</option>
+        {% endif %}
       {% endfor %}
+      <option value="">未分類</option>
     </select>
   </div>
 
@@ -49,14 +52,14 @@
           </div>
           <p class="card-text">[[ test.que ]]</p>
           <!-- Button trigger modal -->
-          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#[[index]]">
+          <button type="button" class="btn btn-primary" data-bs-toggle="modal" :data-bs-target="'#testModal'+String(index)">
             <img src="../static/img/settings.png" width="25px" >
           </button>
         </div>
       </div>
   
       <!-- Modal -->
-      <div class="modal fade" :id="[[index]]" tabindex="-1" aria-labelledby="testModalLabel" aria-hidden="true">
+      <div class="modal fade" :id="'testModal'+String(index)" tabindex="-1" aria-labelledby="testModalLabel" aria-hidden="true">
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
@@ -81,9 +84,12 @@
                 <div>
                   <label class="form-label" style="font-size: 25px;">科目</label><br>
                   <select name="subject" type="subject" style="font-size: 20px;">
-                  <option value="" selected>[[test.subject]]</option>
                   {% for subject in subjects %}
-                    <option>{{ subject }}</option>
+                    {% if subject == "" %}
+                      <option>未分類</option>
+                    {% else %}
+                      <option>{{ subject }}</option>
+                    {% endif %}
                   {% endfor %}
                   </select>
                 </div>
@@ -112,109 +118,19 @@
     </div>
   </div>
   
-
-
-
-  <br>
-  <br>
-  <br>
-  <br>
-
-  <div class="testcard">
-    <!-- ループで全部表示する -->
-    {% for test in tests_list %}
-    <!-- テストカード -->
-    <div class="card box" style="width: 23rem; margin: 5px; text-align: left;">
-      <div class="card-body">
-        <div class="row">
-          <div class="col">
-            <span class="badge bg-secondary">{{test.subject}}</span>
-          </div>
-          <div class="col">
-            <span class="badge bg-light text-dark">正答率：{{test.percent|floatformat:2}}%</span>
-          </div>
-        </div>
-        <p class="card-text">{{ test.que }}</p>
-        <!-- Button trigger modal -->
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#testModal{{forloop.counter0}}">
-          <img src="../static/img/settings.png" width="25px" >
-        </button>
-      </div>
-    </div>
-
-    <!-- Modal -->
-    <div class="modal fade" id="testModal{{forloop.counter0}}" tabindex="-1" aria-labelledby="testModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h4 class="modal-title" id="testModalLabel">テストの詳細（科目：{{test.subject}}）</h4>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          
-          <div class="modal-body" style="text-align: left;">
-            <h5>問題</h5>
-            {{test.que}}
-            <h5>解答</h5>
-            <div style="color: red;">{{test.ans}}</div>
-            <h5>記録</h5>
-            正答率：{{test.percent|floatformat:2}}%<br>
-            総出題回数：{{test.total}}
-          </div>
-
-          <div class="modal-footer">
-            <form method="post" action="{% url 'test:history' %}">
-              {% csrf_token %}
-              <input type="hidden" name="test_id" value="{{ test.id }}">
-              <div>
-                <label class="form-label" style="font-size: 25px;">科目</label><br>
-                <select name="subject" type="subject" style="font-size: 20px;">
-                <option value="" selected>{{test.subject}}</option>
-                {% for subject in subjects %}
-                  <option>{{ subject }}</option>
-                {% endfor %}
-                </select>
-              </div>
-              <div class="container">
-                <div class="row">
-                  <div class="col">
-                    <h5>問題</h5>
-                    <textarea rows="5" cols="30" name="question" v-model="question" placeholder="問題文を入力してください" style="font-size: 20px;"></textarea>
-                    <div v-if="check_que" style="color: red;">問題を入力してください</div>
-                  </div>
-                  <div class="col">
-                    <h5>解答</h5>
-                    <textarea rows="5" cols="30" name="answer" v-model="answer" placeholder="解答を入力してください" style="font-size: 20px;"></textarea>
-                    <div v-if="check_ans" style="color: red;">解答を入力してください</div>
-                  </div>
-                </div>
-              </div>
-              <!-- 送信ボタン -->
-              <button type="submit" :disabled="!sendable" class="btn btn-primary" name="update" style="margin: 0.3rem; font-size: 20px;">更新</button>
-              <button type="submit" class="btn btn-danger" name="delete" style="margin: 0.3rem; font-size: 20px;">削除</button>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
-    {% endfor %}
-  </div>
-</div>
-
 {{ tests_list|json_script:"tests_list" }}
 
 {% endblock content%}
 
 {% block cdn %}
-<!-- axios.js -->
-<script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
-<!-- vue.js -->
-<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+  <!-- axios.js -->
+  <script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
+  <!-- vue.js -->
+  <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
 {% endblock cdn %}
 
 {% block script %}
 <script>
-  
-
   async function search_tests(){
     var que = await document.getElementById('que').value;
     

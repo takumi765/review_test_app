@@ -1,5 +1,8 @@
 Vue.use(window["vue-js-modal"].default);
 
+//DjangoからのデータをJSON形式で受け取る
+const testList = JSON.parse(document.getElementById('tests_list').textContent);
+
 new Vue({
   el: '#app',
   delimiters: ['[[', ']]'],
@@ -7,30 +10,29 @@ new Vue({
     isActive: true,
     question: '',
     answer: '',
-    tests: [],
+    tests: testList,
   },
   methods: {
     /* テスト画面で解答を表示させる処理 */
     changeShow: function() {
       this.isActive = !this.isActive;
     },
+    /* プルダウンメニューと同期させる処理 */
     detectChange: function(e) {
+      /* 初期化 */
       this.tests = [];
+
       //プルダウンの値を確認する
       //console.log(e.target.value);
       
-      //DjangoからのデータをJSON形式で受け取る
-      var testList = JSON.parse(document.getElementById('tests_list').textContent);
-      //var testList_filtered = new Array();
       //フィルタを掛けてデータを抽出する
       for(let i=0;i<testList.length;i++){
-        if(e.target.value=== ''){
+        if(e.target.value=== '全て'){
           this.tests.push(testList[i]);
-        }else if(testList[i].subject === e.target.value){
+        }else if(e.target.value === testList[i].subject){
           this.tests.push(testList[i]);
         }
       }
-      //console.log(testList_filtered);
     },
   },
   computed: {
