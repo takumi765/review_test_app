@@ -1,8 +1,5 @@
 Vue.use(window["vue-js-modal"].default);
 
-//DjangoからのデータをJSON形式で受け取る
-const testList = JSON.parse(document.getElementById('tests_list').textContent);
-
 new Vue({
   el: '#app',
   delimiters: ['[[', ']]'],
@@ -24,7 +21,10 @@ new Vue({
 
       //プルダウンの値を確認する
       //console.log(e.target.value);
-      
+
+      //DjangoからのデータをJSON形式で受け取る
+      const testList = JSON.parse(document.getElementById('tests_list').textContent);
+
       //フィルタを掛けてデータを抽出する
       for(let i=0;i<testList.length;i++){
         if(e.target.value=== '全て'){
