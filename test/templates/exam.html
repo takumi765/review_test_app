@@ -8,9 +8,8 @@
   <button type="submit" class="btn btn-secondary" style="font-size: 20px;">戻る</button>
 </form>
 
-
 <!-- 初期画面は非表示 -->
-<div id="app">
+<div id="show">
   <!-- フィルタリング -->
   <div style="margin: 10px;">
     <div style="font-size: 25px;">表示項目</div>
@@ -65,7 +64,49 @@
 
 {{ tests_list|json_script:"tests_list" }}
 
+{% block cdn %}
+  <!-- vue cdn -->
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.11"></script>
+{% endblock cdn %}
+
 {% block script %}
+<script>
+  //DjangoからのデータをJSON形式で受け取る
+  var testList = JSON.parse(document.getElementById('tests_list').textContent);
+
+  new Vue({
+    el: '#show',
+    delimiters: ['[[', ']]'],
+    data: {
+      isActive: true,
+      tests: testList,
+    },
+    methods: {
+      /* テスト画面で解答を表示させる処理 */
+      changeShow: function() {
+        this.isActive = !this.isActive;
+        console.log(this.isActive);
+      },
+      /* プルダウンメニューと同期させる処理 */
+      detectChange: function(e) {
+        /* 初期化 */
+        this.tests = [];
+
+        //プルダウンの値を確認する
+        console.log(e.target.value);
+
+        //フィルタを掛けてデータを抽出する
+        for(let i=0;i<testList.length;i++){
+          if(e.target.value=== '全て'){
+            this.tests.push(testList[i]);
+          }else if(e.target.value === testList[i].subject){
+            this.tests.push(testList[i]);
+          }
+        }
+      },
+    },
+  })
+</script>
 {% endblock script %}
 
 {% endblock %}

@@ -9,7 +9,7 @@
 {% endif %} -->
 
 <!-- 問題をdbに追加する -->
-<div id="app">
+<div id="msg">
   <form method="post" action="{% url 'test:create' %}">
     {% csrf_token %}
     <!-- 科目のプルダウンメニュー -->
@@ -46,5 +46,35 @@
 <form method="get" action="{% url 'test:index' %}">
   <button type="submit" class="btn btn-secondary" style="margin: 0.5rem; font-size: 25px;">戻る</button>
 </form>
+
+{% block cdn %}
+  <!-- vue cdn -->
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.11"></script>
+{% endblock cdn %}
+
+{% block script %}
+  <script>
+    new Vue({
+      el: '#msg',
+      data: {
+        question: '',
+        answer: '',
+      },
+      computed: {
+        /* フォームバリデーション */
+        check_que: function () {
+          return this.question.length < 1;
+        },
+        check_ans: function(){
+          return this.answer.length < 1;
+        },
+        /* 更新ボタン有効化 */
+        sendable() {
+          return this.question.length > 0 && this.answer.length >0;
+        },
+      },
+    })
+  </script>
+{% endblock script %}
 
 {% endblock %}

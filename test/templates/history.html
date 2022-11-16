@@ -22,7 +22,7 @@
   <button type="submit" class="btn btn-secondary" style="font-size: 20px;">戻る</button>
 </form>
 
-<div  id="app">
+<div  id="popup">
   <!-- フィルタリング -->
   <div style="margin: 10px;">
     <div style="font-size: 25px;">表示項目</div>
@@ -73,7 +73,7 @@
               <h5>解答</h5>
               <div style="color: red;">[[test.ans]]</div>
               <h5>記録</h5>
-              正答率：[[test.percent|floatformat:2]]%<br>
+              正答率：[[test.percent]]%<br>
               総出題回数：[[test.total]]
             </div>
   
@@ -159,6 +159,53 @@
       tests: tests
     }
   });
+</script>
+
+<script>
+  //DjangoからのデータをJSON形式で受け取る
+  var testList = JSON.parse(document.getElementById('tests_list').textContent);
+
+  new Vue({
+    el: '#popup',
+    delimiters: ['[[', ']]'],
+    data: {
+      question: '',
+      answer: '',
+      tests: testList,
+    },
+    methods: {
+      /* プルダウンメニューと同期させる処理 */
+      detectChange: function(e) {
+        /* 初期化 */
+        this.tests = [];
+
+        //プルダウンの値を確認する
+        //console.log(e.target.value);
+
+        //フィルタを掛けてデータを抽出する
+        for(let i=0;i<testList.length;i++){
+          if(e.target.value=== '全て'){
+            this.tests.push(testList[i]);
+          }else if(e.target.value === testList[i].subject){
+            this.tests.push(testList[i]);
+          }
+        }
+      },
+    },
+    computed: {
+      /* フォームバリデーション */
+      check_que: function () {
+        return this.question.length < 1;
+      },
+      check_ans: function(){
+        return this.answer.length < 1;
+      },
+      /* 更新ボタン有効化 */
+      sendable() {
+        return this.question.length > 0 && this.answer.length >0
+      },
+    },
+  })
 
 
 
