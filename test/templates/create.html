@@ -40,6 +40,10 @@
     <!-- 追加ボタン -->
     <button type="submit" :disabled="!sendable" class="btn btn-primary" style="margin: 0.5rem; font-size: 25px;">テストを追加</button>
   </form>
+  <input v-model.trim="A">
+  <div v-if="ty">aaa</div>
+  <div v-if="tk">bbb</div>
+  [[A.length]]
 </div>
 
 
@@ -47,9 +51,11 @@
 <form method="get" action="{% url 'test:index' %}">
   <button type="submit" class="btn btn-secondary" style="margin: 0.5rem; font-size: 25px;">戻る</button>
 </form>
+
 {% block cdn %}
   <!-- vue.js -->
   <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.17/vue.min.js"></script>
 {% endblock cdn %}
 
 {% block script %}
@@ -60,17 +66,26 @@
       data: {
         question: '',
         answer: '',
+        A:'aaa',
       },
       computed: {
+        ty: function(){
+          console.log(this.A.length);
+          return this.A.length<1;
+        },
+        tk: function(){
+          return this.A.length>1;
+        },
         /* フォームバリデーション */
         check_que: function () {
+          console.log(this.question);
           return this.question.length < 1;
         },
         check_ans: function(){
           return this.answer.length < 1;
         },
         /* 更新ボタン有効化 */
-        sendable() {
+        sendable: function() {
           return this.question.length > 0 && this.answer.length >0;
         },
       },
