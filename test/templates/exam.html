@@ -65,47 +65,47 @@
 {{ tests_list|json_script:"tests_list" }}
 
 {% block cdn %}
-  <!-- vue cdn -->
-  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.11"></script>
+  <!-- vue.js -->
+  <!-- <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script> -->
 {% endblock cdn %}
 
 {% block script %}
 <script>
   //DjangoからのデータをJSON形式で受け取る
-  var testList = JSON.parse(document.getElementById('tests_list').textContent);
+  // var testList = JSON.parse(document.getElementById('tests_list').textContent);
 
-  new Vue({
-    el: '#show',
-    delimiters: ['[[', ']]'],
-    data: {
-      isActive: true,
-      tests: testList,
-    },
-    methods: {
-      /* テスト画面で解答を表示させる処理 */
-      changeShow: function() {
-        this.isActive = !this.isActive;
-        console.log(this.isActive);
-      },
-      /* プルダウンメニューと同期させる処理 */
-      detectChange: function(e) {
-        /* 初期化 */
-        this.tests = [];
+  // new Vue({
+  //   el: '#show',
+  //   delimiters: ['[[', ']]'],
+  //   data: {
+  //     isActive: true,
+  //     tests: testList,
+  //   },
+  //   methods: {
+  //     /* テスト画面で解答を表示させる処理 */
+  //     changeShow: function() {
+  //       this.isActive = !this.isActive;
+  //       console.log(this.isActive);
+  //     },
+  //     /* プルダウンメニューと同期させる処理 */
+  //     detectChange: function(e) {
+  //       /* 初期化 */
+  //       this.tests = [];
 
-        //プルダウンの値を確認する
-        console.log(e.target.value);
+  //       //プルダウンの値を確認する
+  //       console.log(e.target.value);
 
-        //フィルタを掛けてデータを抽出する
-        for(let i=0;i<testList.length;i++){
-          if(e.target.value=== '全て'){
-            this.tests.push(testList[i]);
-          }else if(e.target.value === testList[i].subject){
-            this.tests.push(testList[i]);
-          }
-        }
-      },
-    },
-  })
+  //       //フィルタを掛けてデータを抽出する
+  //       for(let i=0;i<testList.length;i++){
+  //         if(e.target.value=== '全て'){
+  //           this.tests.push(testList[i]);
+  //         }else if(e.target.value === testList[i].subject){
+  //           this.tests.push(testList[i]);
+  //         }
+  //       }
+  //     },
+  //   },
+  // })
 </script>
 {% endblock script %}
 
