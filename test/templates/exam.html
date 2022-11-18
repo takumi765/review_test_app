@@ -13,7 +13,7 @@
   <!-- フィルタリング -->
   <div style="margin: 10px;">
     <div style="font-size: 25px;">テストの絞り込み</div>
-    <select style="font-size: 20px;" @change="detectChange">
+    <select style="font-size: 20px;" class="SelectBox" @change="detectChange">
       <option value="全て" selected>全て</option>
       {% for subject in subjects %}
         {% if subject == "" %}
@@ -109,4 +109,31 @@
     },
   })
 </script>
+
+<script type="text/javascript">
+  $(function(){
+       const url = new URL(window.location.href);
+       const cat = url.searchParams.get('cat');
+       // ③
+       if(url.searchParams.get('cat')){
+       // ④
+         $(".SelectBox").val(cat);
+       }else{
+         url.searchParams.append('cat','全て');
+         location.href = url;
+   }
+  
+   $(".SelectBox").change(function(){
+       // ①
+       const selected = $(this).val();
+       // ②
+       if(url.searchParams.get('cat')) {
+         url.searchParams.set('cat',selected);
+       }else{
+         url.searchParams.append('cat',selected);
+       }
+       location.href = url;
+    });
+  });
+  </script>
 {% endblock script %}
