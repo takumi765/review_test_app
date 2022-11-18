@@ -29,12 +29,12 @@
   <div class="card" style="margin: 1rem; padding: 10px;">
     <h5 class="card-header">
       <div style="font-size: 25px;">問題</div>
-      <div><span class="badge bg-secondary">[[ tests[0].subject ]]</span></div>
-      <div style="text-align: right; font-size: 15px;">正答率：[[ tests[0].percent ]]%</div>
+      <div><span class="badge bg-secondary">[[ test.subject ]]</span></div>
+      <div style="text-align: right; font-size: 15px;">正答率：[[ test.percent ]]%</div>
     </h5>
     <div class="card-body">
       <h5 class="card-title"></h5>
-      <p class="card-text" style="font-size: 20px;">[[ tests[0].que ]]</p>
+      <p class="card-text" style="font-size: 20px;">[[ test.que ]]</p>
     </div>
   </div>
 
@@ -44,15 +44,15 @@
       <h5 class="card-header" style="font-size: 25px;">解答</h5>
       <div class="card-body">
         <h5 class="card-title"></h5>
-        <p class="card-text" style="color: red; font-size: 20px;">[[ tests[0].ans ]]</p>
+        <p class="card-text" style="color: red; font-size: 20px;">[[ test.ans ]]</p>
       </div>
       <p class="info">
-        正答率：[[ tests[0].percent ]]%<br>
-        出題数：[[ tests[0].total ]]
+        正答率：[[ test.percent ]]%<br>
+        出題数：[[ test.total ]]
       </p>
       <form method="post" action="{%url 'test:exam' %}">
         {% csrf_token %}
-        <input type="hidden" name="test_id" :value="[[ tests[0].id ]]">
+        <input type="hidden" name="test_id" :value="[[ test.id ]]">
         <button type="submit" class="btn btn-primary" name="correct" style="font-size: 20px;">正解</button>
         <button type="submit" class="btn btn-danger" name="uncorrect" style="font-size: 20px;">不正解</button>
       </form>
@@ -64,49 +64,50 @@
 
 {{ tests_list|json_script:"tests_list" }}
 
+{% endblock content %}
+
 {% block cdn %}
   <!-- vue.js -->
-  <!-- <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script> -->
+  <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
 {% endblock cdn %}
 
 {% block script %}
 <script>
   //DjangoからのデータをJSON形式で受け取る
-  // var testList = JSON.parse(document.getElementById('tests_list').textContent);
+  var testList = JSON.parse(document.getElementById('tests_list').textContent);
+  console.log(testList[0]);
 
-  // new Vue({
-  //   el: '#show',
-  //   delimiters: ['[[', ']]'],
-  //   data: {
-  //     isActive: true,
-  //     tests: testList,
-  //   },
-  //   methods: {
-  //     /* テスト画面で解答を表示させる処理 */
-  //     changeShow: function() {
-  //       this.isActive = !this.isActive;
-  //       console.log(this.isActive);
-  //     },
-  //     /* プルダウンメニューと同期させる処理 */
-  //     detectChange: function(e) {
-  //       /* 初期化 */
-  //       this.tests = [];
+  new Vue({
+    el: '#show',
+    delimiters: ['[[', ']]'],
+    data: {
+      isActive: true,
+      test: testList[Math.floor(Math.random()*testList.length)],
+    },
+    methods: {
+      /* テスト画面で解答を表示させる処理 */
+      changeShow: function() {
+        this.isActive = !this.isActive;
+        //console.log(this.isActive);
+      },
+      /* プルダウンメニューと同期させる処理 */
+      detectChange: function(e) {
+        /* 初期化 */
+        var tests = [];
+        //プルダウンの値を確認する
+        //console.log(e.target.value);
 
-  //       //プルダウンの値を確認する
-  //       console.log(e.target.value);
-
-  //       //フィルタを掛けてデータを抽出する
-  //       for(let i=0;i<testList.length;i++){
-  //         if(e.target.value=== '全て'){
-  //           this.tests.push(testList[i]);
-  //         }else if(e.target.value === testList[i].subject){
-  //           this.tests.push(testList[i]);
-  //         }
-  //       }
-  //     },
-  //   },
-  // })
+        //フィルタを掛けてデータを抽出する
+        for(let i=0;i<testList.length;i++){
+          if(e.target.value=== '全て'){
+            tests.push(testList[i]);
+          }else if(e.target.value === testList[i].subject){
+            tests.push(testList[i]);
+          }
+        }
+        this.test = tests[Math.floor(Math.random()*tests.length)];
+      },
+    },
+  })
 </script>
 {% endblock script %}
-
-{% endblock %}
