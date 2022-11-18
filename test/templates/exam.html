@@ -12,7 +12,7 @@
 <div id="show">
   <!-- フィルタリング -->
   <div style="margin: 10px;">
-    <div style="font-size: 25px;">表示項目</div>
+    <div style="font-size: 25px;">テストの絞り込み</div>
     <select style="font-size: 20px;" @change="detectChange">
       <option value="全て" selected>全て</option>
       {% for subject in subjects %}
@@ -75,7 +75,6 @@
 <script>
   //DjangoからのデータをJSON形式で受け取る
   var testList = JSON.parse(document.getElementById('tests_list').textContent);
-  console.log(testList[0]);
 
   new Vue({
     el: '#show',
