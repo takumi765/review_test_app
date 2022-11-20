@@ -10,21 +10,15 @@
 
 <!-- 初期画面は非表示 -->
 <div id="show">
+  
   <!-- フィルタリング -->
   <div style="margin: 10px;">
     <div style="font-size: 25px;">テストの絞り込み</div>
-    <select style="font-size: 20px;" class="SelectBox" @change="detectChange">
-      <option value="全て" selected>全て</option>
-      {% for subject in subjects %}
-        {% if subject == "" %}
-          <option value="">未分類</option>
-        {% else %}
-          <option value="{{ subject }}">{{ subject }}</option>
-        {% endif %}
-      {% endfor %}
+    <select style="font-size: 20px;" @change="detectChange" v-model="selected" name="select" id="select">
+      <option value="全て">全て</option>
+      <option v-for="subject, index in subjects" :value="subject.subject">[[ subject.subject_name ]]</option>
     </select>
-  </div>
-
+    
   <!-- 問題部分 -->
   <div class="card" style="margin: 1rem; padding: 10px;">
     <h5 class="card-header">
@@ -59,35 +53,59 @@
     </div>
   </div>
   <button type="submit" class="btn btn-primary" @click="changeShow" style="font-size: 25px;">解答を見る</button>
+  <p></p>
+  <p>選んだ項目：[[ selected ]]</p>
 </div>
 
 
 {{ tests_list|json_script:"tests_list" }}
+{{ subject_list|json_script:"subject_list" }}
 
 {% endblock content %}
 
 {% block cdn %}
   <!-- vue.js -->
   <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+  <!-- cookkie cdn -->
+  <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.0/dist/js.cookie.min.js"></script>
 {% endblock cdn %}
 
 {% block script %}
 <script>
   //DjangoからのデータをJSON形式で受け取る
   var testList = JSON.parse(document.getElementById('tests_list').textContent);
-
+  var subjectList = JSON.parse(document.getElementById('subject_list').textContent);
+  
   new Vue({
     el: '#show',
     delimiters: ['[[', ']]'],
     data: {
+      subjects: subjectList,
+      selected: '',
       isActive: true,
       test: testList[Math.floor(Math.random()*testList.length)],
+    },
+    
+    /* パージ読み込み時に実行される部分 */
+    mounted: function(){
+      /* プルダウンの初期値 */
+      this.selected = '理科';
+
+      var tests = [];
+      //フィルタを掛けてデータを抽出する
+      for(let i=0;i<testList.length;i++){
+        if(this.selected=== '全て'){
+          tests.push(testList[i]);
+        }else if(this.selected === testList[i].subject){
+          tests.push(testList[i]);
+        }
+      }
+      this.test = tests[Math.floor(Math.random()*tests.length)];
     },
     methods: {
       /* テスト画面で解答を表示させる処理 */
       changeShow: function() {
         this.isActive = !this.isActive;
-        //console.log(this.isActive);
       },
       /* プルダウンメニューと同期させる処理 */
       detectChange: function(e) {
@@ -95,6 +113,8 @@
         var tests = [];
         //プルダウンの値を確認する
         //console.log(e.target.value);
+        //Cookies.set('subject', '東京');
+        //Cookies.get('subject');
 
         //フィルタを掛けてデータを抽出する
         for(let i=0;i<testList.length;i++){
@@ -109,31 +129,4 @@
     },
   })
 </script>
-
-<script type="text/javascript">
-  $(function(){
-       const url = new URL(window.location.href);
-       const cat = url.searchParams.get('cat');
-       // ③
-       if(url.searchParams.get('cat')){
-       // ④
-         $(".SelectBox").val(cat);
-       }else{
-         url.searchParams.append('cat','全て');
-         location.href = url;
-   }
-  
-   $(".SelectBox").change(function(){
-       // ①
-       const selected = $(this).val();
-       // ②
-       if(url.searchParams.get('cat')) {
-         url.searchParams.set('cat',selected);
-       }else{
-         url.searchParams.append('cat',selected);
-       }
-       location.href = url;
-    });
-  });
-  </script>
 {% endblock script %}

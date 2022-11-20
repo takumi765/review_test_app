@@ -85,8 +85,20 @@ def exam(request):
         'visibility': test.visibility
       })
     
+    subject_list = []
+    for subject in subjects:
+      if subject == "":
+        subject_list.append({
+          'subject': subject,
+          'subject_name': "未分類"
+        })
+      else:
+        subject_list.append({
+          'subject': subject,
+          'subject_name': subject
+        })
     param['tests_list']=test_list
-    param['subjects']=subjects
+    param['subject_list']=subject_list
     return render(request, 'exam.html', param)
     
   elif request.method == 'POST':
@@ -106,8 +118,8 @@ def exam(request):
 
 def history(request):
   if request.method == 'GET':
-    test_list = []
     tests = Test.objects.filter(user=request.user)
+    subjects = Test.objects.filter(user=request.user).distinct().values_list('subject', flat=True)
     """ dbに登録された全てのテストを出力する """
     
     '''
@@ -124,14 +136,35 @@ def history(request):
     # 公開テストか非公開テストか
     visibility = models.CharField(max_length=20, default='public')
     '''
-    
+    test_list = []
     for test in tests:
-      test_list.append({'id': test.id, 'subject': test.subject, 'que': test.que, 'ans': test.ans, 'total': test.total, 'correct': test.correct, 'percent': test.percent, 'visibility': test.visibility})
+      test_list.append({
+        'id': test.id, 
+        'subject': test.subject, 
+        'que': test.que, 
+        'ans': test.ans, 
+        'total': test.total, 
+        'correct': test.correct, 
+        'percent': test.percent, 
+        'visibility': test.visibility
+        })
+
+    subject_list = []
+    for subject in subjects:
+      if subject == "":
+        subject_list.append({
+          'subject': subject,
+          'subject_name': "未分類"
+        })
+      else:
+        subject_list.append({
+          'subject': subject,
+          'subject_name': subject
+        })
       
     param = {}
-    subjects = Test.objects.filter(user=request.user).distinct().values_list('subject', flat=True)
     param["tests_list"] = test_list
-    param["subjects"] = subjects
+    param["subject_list"] = subject_list
     return render(request, 'history.html', param)
   
   elif request.method == 'POST':
