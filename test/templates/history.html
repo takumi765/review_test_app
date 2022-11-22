@@ -112,7 +112,7 @@
       </div>
     </div>
   </div>
-  
+</div>
 {{ tests_list|json_script:"tests_list" }}
 {{ subject_list|json_script:"subject_list" }}
 
@@ -175,21 +175,42 @@
       // answer: '',
       tests: testList,
     },
-    /* パージ読み込み時に実行される部分 */
+    /* ページ読み込み時に実行される部分 */
     mounted: function(){
-      /* プルダウンの初期値 */
-      this.selected = '理科';
+      //Cookieを全て取得
+      var cookies = document.cookie;
 
-      var tests = [];
+      //取得したCookieを分割する
+      var cookiesArray = cookies.split(';');
+      var cookie = -1;
+      for(var c of cookiesArray){
+        var cArray = c.split('=');
+        if(cArray[0] == 'pulldown'){
+          //console.log(cArray);
+          cookie = cArray[1];
+        }
+      }
+      //確認部分--指定したidの後にCookieの内容を表示する--
+      /* let e = document.getElementById('###');
+      e.insertAdjacentHTML('afterend', '<p>' + document.cookie + '</p>');
+      e.insertAdjacentHTML('afterend', '<p>' + cookie + '</p>'); */
+
+      /* プルダウンの初期値設定 */
+      if(cookie === -1){
+        this.selected = '全て';
+      }else{
+        this.selected = cookie;
+      }
+
+      this.tests = [];
       //フィルタを掛けてデータを抽出する
       for(let i=0;i<testList.length;i++){
         if(this.selected=== '全て'){
-          tests.push(testList[i]);
+          this.tests.push(testList[i]);
         }else if(this.selected === testList[i].subject){
-          tests.push(testList[i]);
+          this.tests.push(testList[i]);
         }
       }
-      this.test = tests[Math.floor(Math.random()*tests.length)];
     },
     methods: {
       /* プルダウンメニューと同期させる処理 */
@@ -199,6 +220,9 @@
 
         //プルダウンの値を確認する
         //console.log(e.target.value);
+
+        //cookieにプルダウンの値を登録する
+        document.cookie = 'pulldown=' + e.target.value;
 
         //フィルタを掛けてデータを抽出する
         for(let i=0;i<testList.length;i++){
