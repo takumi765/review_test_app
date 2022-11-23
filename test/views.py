@@ -17,12 +17,12 @@ def login_view(request):
     param['UserNum'] = len(User.objects.all())
     return render(request, 'login.html', param)
   if request.method == 'POST':
-    name = request.POST.get('name')
     password = request.POST.get('password')
-    user = authenticate(username=name, password=password)
+    userinfo = User.objects.filter(email=request.POST.get('email'))
+    user = authenticate(username=userinfo[0], password=password)
     if user is not None:
       login(request, user)
-      return HttpResponseRedirect(reverse('test:index'), {'user': user})  
+      return HttpResponseRedirect(reverse('test:index'), {'user': user}) 
     messages.error(request, '入力情報に間違いがあります')
     return HttpResponseRedirect('.')
 

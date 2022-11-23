@@ -18,7 +18,7 @@
         </div>
         <div class="mb-3">
             <label class="form-label">パスワード(半角英数字)</label>
-            <input name="password" type="password" v-model="password" class="form-control" />
+            <input name="password" type="password" class="form-control" />
         </div>
         <button type="submit" class="btn btn-primary" style="font-size: 20px; margin: 10px 0;" @click="CreateUser">登録</button>
     </form>
@@ -40,7 +40,6 @@
     data: {
         name:'',
         email:'',
-        password:'',
     },
     /* ページ読み込み時に実行される部分 */
     mounted: function(){
@@ -56,8 +55,6 @@
           NAME = cArray[1];
         }else if(cArray[0] == ' email'){
           EMAIL = cArray[1];
-        }else if(cArray[0] == ' password'){
-          PASS = cArray[1];
         }
       }
 
@@ -69,14 +66,12 @@
       //初期値を登録する
       this.name=NAME;
       this.email=EMAIL;
-      this.password=PASS;
     },
     methods: {
       CreateUser: function() {
-        //cookieに入力されているの値を登録する
-        document.cookie = 'name=' + this.name;
-        document.cookie = 'email=' + this.email;
-        document.cookie = 'password=' + this.password;
+        //cookieに入力されているの値を登録する(有効期限600秒)
+        document.cookie = 'name=' + this.name + ';max-age=600';
+        document.cookie = 'email=' + this.email + ';max-age=600';
       },
     },
   })

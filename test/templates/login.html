@@ -16,8 +16,8 @@
 <form method="post" action="{% url 'test:login' %}">
     {% csrf_token %}
     <div class="mb-3">
-        <label class="form-label">ユーザ名</label>
-        <input class="form-control" name="name" type="text" />
+        <label class="form-label">Email</label>
+        <input class="form-control" name="email" type="text" />
     </div>
     <div class="mb-3">
         <label class="form-label">パスワード</label>
@@ -33,7 +33,7 @@
       <a style="text-align: center; font-size: 30px;">出来ること</a>
     </div>
     <div class="card-body">
-      <ol style="font-size: 20px;">
+      <ol style="font-size: 20px; padding: 0 15%;">
         <li>テストをつくる<br>（科目毎に分けることも可能）</li>
         <li>作ったテストを解く<br>（出題科目範囲を選択できる）</li>
         <li>作ったテスト一覧を見る<br>（正答率、出題回数等テストの結果を確認できる）</li>

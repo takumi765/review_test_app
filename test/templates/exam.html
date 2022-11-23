@@ -132,8 +132,8 @@
         //プルダウンの値を確認する
         //console.log(e.target.value);
 
-        //cookieにプルダウンの値を登録する
-        document.cookie = 'pulldown=' + e.target.value;
+        //cookieにプルダウンの値を登録する（有効期限180秒）
+        document.cookie = 'pulldown=' + e.target.value + ';max-age=180';
 
         //フィルタを掛けてデータを抽出する
         for(let i=0;i<testList.length;i++){
