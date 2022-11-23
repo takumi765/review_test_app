@@ -14,7 +14,7 @@
   <!-- フィルタリング -->
   <div style="margin: 10px;">
     <div style="font-size: 25px;">テストの絞り込み</div>
-    <select style="font-size: 20px;" @change="detectChange" v-model="selected" name="select" id="select">
+    <select style="font-size: 20px;" @change="detectChange" v-model="selected">
       <option value="全て">全て</option>
       <option v-for="subject, index in subjects" :value="subject.subject">[[ subject.subject_name ]]</option>
     </select>

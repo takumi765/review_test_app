@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
 {% block title %}ログイン{% endblock title %}
 {% block content %}
+<div class="UserNum">登録ユーザ：<a style="font-weight: bold;">{{ UserNum }}</a>人</div>
+
 {% if messages %}
 <ul class="list-group">
     {% for message in messages %}
@@ -18,7 +20,7 @@
         <label class="form-label">パスワード</label>
         <input name="password" type="password" class="form-control" />
     </div>
-    <button type="submit" class="btn btn-primary">ログイン</button>
+    <button type="submit" class="btn btn-primary" style="font-size: 20px;">ログイン</button>
 </form>
-<a href="{% url 'test:create_user' %}">新規登録画面へ</a>
+<a href="{% url 'test:create_user' %}" style="font-size: 20px;">新規登録画面へ</a>
 {% endblock content %}

@@ -12,7 +12,9 @@ from .forms import TestForm, UserForm
 
 def login_view(request):
   if request.method == 'GET':
-    return render(request, 'login.html')
+    param = {}
+    param['UserNum'] = len(User.objects.all())
+    return render(request, 'login.html', param)
   if request.method == 'POST':
     name = request.POST.get('name')
     password = request.POST.get('password')
