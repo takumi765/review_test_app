@@ -13,6 +13,7 @@ from .forms import TestForm, UserForm
 def login_view(request):
   if request.method == 'GET':
     param = {}
+    """ 登録ユーザ数 """
     param['UserNum'] = len(User.objects.all())
     return render(request, 'login.html', param)
   if request.method == 'POST':
@@ -20,8 +21,8 @@ def login_view(request):
     password = request.POST.get('password')
     user = authenticate(username=name, password=password)
     if user is not None:
-        login(request, user)
-        return HttpResponseRedirect(reverse('test:index'), {'user': user})  
+      login(request, user)
+      return HttpResponseRedirect(reverse('test:index'), {'user': user})  
     messages.error(request, '入力情報に間違いがあります')
     return HttpResponseRedirect('.')
 
@@ -31,7 +32,7 @@ def create_user(request):
   if request.method == 'POST':
     form = UserForm(request.POST)
     if form.is_valid():
-      User.objects.create_user(username=request.POST.get('name'), password=request.POST.get('password'))
+      User.objects.create_user(username=request.POST.get('name'), password=request.POST.get('password'), email=request.POST.get('email'))
       return HttpResponseRedirect(reverse('test:login'))
     print(form.errors)
     return render(request, 'create_user.html', {'form': form})
