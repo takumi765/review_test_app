@@ -15,6 +15,15 @@ def test_list(request):
         tests = Test.objects.filter(que__icontains=request_data['que'])
         response_data = {'tests': []}
         for test in tests:
-            response_data['tests'].append({'id': test.id, 'que': test.que, 'ans': test.ans})
+            response_data['tests'].append({
+                'id': test.id, 
+                'subject': test.subject, 
+                'que': test.que, 
+                'ans': test.ans, 
+                'total': test.total, 
+                'correct': test.correct, 
+                'percent': test.percent, 
+                'visibility': test.visibility
+            })
         return JsonResponse(data=response_data)
         

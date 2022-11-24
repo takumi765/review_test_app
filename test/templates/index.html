@@ -4,9 +4,12 @@
 
 <div style="text-align: center;">
   <h1 style="text-align: center; font-size: 50px; margin-bottom: 5rem;">{{ date|date:"Y年 m月 d日"}}</h1>
-  <h5>ようこそ！</h5>
-  <h5>{{user.username}}さん</h5>
-  <h5>今日も頑張りましょう！</h5>
+  
+  <div style="margin-bottom: 2rem;">
+    <h5 style="font-size: 1.7rem;">ようこそ！</h5>
+    <h5 style="font-size: 1.7rem;"><a style="font-size: 2rem; font-weight: bold;">{{user.username}}</a>さん</h5>
+    <h5 style="font-size: 1.7rem;">今日も頑張りましょう！</h5>
+  </div>
   <!-- createページへ -->
   <div style="margin: 10px;">
     <form method="get" action="{% url 'test:create' %}">

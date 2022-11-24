@@ -1,25 +1,27 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1 style="font-size: 40px; margin-bottom: 3rem;"><b>テストする</b></h1>
+<h1 style="font-size: 40px; margin-bottom: 1rem;"><b>テストする</b></h1>
 
 <!-- メニューに戻る -->
 <form method="get" action="{% url 'test:index' %}">
-  <button type="submit" class="btn btn-secondary" style="font-size: 20px;">戻る</button>
+  <button type="submit" class="btn btn-secondary" style="font-size: 20px; margin-bottom: 2rem;">戻る</button>
 </form>
 
 <!-- 初期画面は非表示 -->
 <div id="show">
   
   <!-- フィルタリング -->
-  <div style="margin: 10px;">
-    <div style="font-size: 25px;">テストの絞り込み</div>
-    <select style="font-size: 20px;" @change="detectChange" v-model="selected">
-      <option value="全て">全て</option>
-      <option v-for="subject, index in subjects" :value="subject.subject">[[ subject.subject_name ]]</option>
-    </select>
-    
-  <!-- 問題部分 -->
+  <div style="margin: 30px 0 10px 0;">
+    <div style="display: flex;">
+      <div style="font-size: 25px; font-weight: bold; color: cadetblue; margin-right: 5px;">テスト：</div>
+      <select style="font-size: 20px;" @change="detectChange" v-model="selected">
+        <option value="全て">全て</option>
+        <option v-for="subject, index in subjects" :value="subject.subject">[[ subject.subject_name ]]</option>
+      </select>
+    </div>
+
+    <!-- 問題部分 -->
   <div class="card" style="margin: 1rem; padding: 10px;">
     <h5 class="card-header">
       <div style="font-size: 25px;">問題</div>
