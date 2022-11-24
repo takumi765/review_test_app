@@ -1,6 +1,11 @@
 {% extends 'base.html' %}
 {% block title %}ログイン{% endblock title %}
 {% block content %}
+<div class="UserNum">登録ユーザ：<a style="font-weight: bold;">{{ UserNum }}</a>人</div>
+
+<div style="text-align: center; font-size: 60px; color: cadetblue; font-weight: bold;">ようこそ！</div>
+
+
 {% if messages %}
 <ul class="list-group">
     {% for message in messages %}
@@ -11,14 +16,29 @@
 <form method="post" action="{% url 'test:login' %}">
     {% csrf_token %}
     <div class="mb-3">
-        <label class="form-label">ユーザ名</label>
-        <input class="form-control" name="name" type="text" />
+        <label class="form-label">Email</label>
+        <input class="form-control" name="email" type="text" />
     </div>
     <div class="mb-3">
         <label class="form-label">パスワード</label>
         <input name="password" type="password" class="form-control" />
     </div>
-    <button type="submit" class="btn btn-primary">ログイン</button>
+    <button type="submit" class="btn btn-primary" style="font-size: 20px; margin: 10px 0;">ログイン</button>
 </form>
-<a href="{% url 'test:create_user' %}">新規登録画面へ</a>
+<a href="{% url 'test:create_user' %}" style="font-size: 20px;">新規登録画面へ</a>
+
+
+<div class="card" style="margin: 30px 20%;">
+    <div class="card-header">
+      <a style="text-align: center; font-size: 30px;">出来ること</a>
+    </div>
+    <div class="card-body">
+      <ol style="font-size: 20px; padding: 0 15%;">
+        <li>テストをつくる<br>（科目毎に分けることも可能）</li>
+        <li>作ったテストを解く<br>（出題科目範囲を選択できる）</li>
+        <li>作ったテスト一覧を見る<br>（正答率、出題回数等テストの結果を確認できる）</li>
+        <li>作ったテストを修正する</li>
+      </ol>
+    </div>
+</div>
 {% endblock content %}

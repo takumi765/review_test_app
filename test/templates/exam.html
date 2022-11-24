@@ -14,7 +14,7 @@
   <!-- フィルタリング -->
   <div style="margin: 10px;">
     <div style="font-size: 25px;">テストの絞り込み</div>
-    <select style="font-size: 20px;" @change="detectChange" v-model="selected" name="select" id="select">
+    <select style="font-size: 20px;" @change="detectChange" v-model="selected">
       <option value="全て">全て</option>
       <option v-for="subject, index in subjects" :value="subject.subject">[[ subject.subject_name ]]</option>
     </select>
@@ -53,10 +53,7 @@
     </div>
   </div>
   <button type="submit" class="btn btn-primary" @click="changeShow" style="font-size: 25px;">解答を見る</button>
-  <p></p>
-  <p>選んだ項目：[[ selected ]]</p>
 </div>
-
 
 {{ tests_list|json_script:"tests_list" }}
 {{ subject_list|json_script:"subject_list" }}
@@ -66,8 +63,6 @@
 {% block cdn %}
   <!-- vue.js -->
   <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
-  <!-- cookkie cdn -->
-  <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.0/dist/js.cookie.min.js"></script>
 {% endblock cdn %}
 
 {% block script %}
@@ -86,10 +81,33 @@
       test: testList[Math.floor(Math.random()*testList.length)],
     },
     
-    /* パージ読み込み時に実行される部分 */
+    /* ページ読み込み時に実行される部分 */
     mounted: function(){
-      /* プルダウンの初期値 */
-      this.selected = '理科';
+      //Cookieを全て取得
+      var cookies = document.cookie;
+
+      //取得したCookieを分割する
+      var cookiesArray = cookies.split(';');
+      var cookie = -1;
+      for(var c of cookiesArray){
+        var cArray = c.split('=');
+        if(cArray[0] == 'pulldown'){
+          //console.log(cArray);
+          cookie = cArray[1];
+        }
+      }
+      //確認部分--指定したidの後にCookieの内容を表示する--
+      /* let e = document.getElementById('###');
+      e.insertAdjacentHTML('afterend', '<p>' + document.cookie + '</p>');
+      e.insertAdjacentHTML('afterend', '<p>' + cookie + '</p>'); */
+
+      /* プルダウンの初期値設定 */
+      if(cookie === -1){
+        //cookieに何も登録されていない時
+        this.selected = '全て';
+      }else{
+        this.selected = cookie;
+      }
 
       var tests = [];
       //フィルタを掛けてデータを抽出する
@@ -113,8 +131,9 @@
         var tests = [];
         //プルダウンの値を確認する
         //console.log(e.target.value);
-        //Cookies.set('subject', '東京');
-        //Cookies.get('subject');
+
+        //cookieにプルダウンの値を登録する（有効期限180秒）
+        document.cookie = 'pulldown=' + e.target.value + ';max-age=180';
 
         //フィルタを掛けてデータを抽出する
         for(let i=0;i<testList.length;i++){

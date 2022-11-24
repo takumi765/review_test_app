@@ -1,3 +1,9 @@
+/* login.html */
+.UserNum {
+    text-align: right;
+    font-size: 25px;
+}
+
 /* テストの正答率の情報 */
 .info {
     font-size: 15px;
@@ -9,6 +15,9 @@
     flex-wrap: wrap;
     text-align: center;
     justify-content: space-between;
+}
+.form-label {
+    font-size: 20px;
 }
 
 .box{
@@ -39,5 +48,5 @@
     padding: 5px 25px;
 }
 .modal-header {
-border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
 }

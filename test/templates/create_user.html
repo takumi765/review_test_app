@@ -5,17 +5,75 @@
 {% if form.errors %}
 {{ form.errors }}
 {% endif %}
-
-<form method="post" action="{% url 'test:create_user' %}">{% csrf_token %}
-    <div class="mb-3">
-        <label class="form-label">ユーザ名</label>
-        <input class="form-control" name="name" type="text" />
-    </div>
-    <div class="mb-3">
-        <label class="form-label">パスワード(半角英数字)</label>
-        <input name="password" type="password" class="form-control" />
-    </div>
-    <button type="submit" class="btn btn-primary">登録</button>
-</form>
-<a href="{% url 'test:login' %}">ログイン画面へ</a>
+<div id="create_user">
+    <form method="post" action="{% url 'test:create_user' %}">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label class="form-label">ユーザ名</label>
+            <input class="form-control" name="name" v-model="name" type="text" />
+        </div>
+        <div class="mb-3">
+            <label class="form-label">E-mail</label>
+            <input class="form-control" name="email" v-model="email" type="text" />
+        </div>
+        <div class="mb-3">
+            <label class="form-label">パスワード(半角英数字)</label>
+            <input name="password" type="password" class="form-control" />
+        </div>
+        <button type="submit" class="btn btn-primary" style="font-size: 20px; margin: 10px 0;" @click="CreateUser">登録</button>
+    </form>
+</div>
+<div id="###"></div>
+<a href="{% url 'test:login' %}" style="font-size: 20px;">ログイン画面へ</a>
 {% endblock content %}
+
+{% block cdn %}
+  <!-- vue.js -->
+  <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+{% endblock cdn %}
+
+{% block script %}
+<script>
+  new Vue({
+    el: '#create_user',
+    delimiters: ['[[', ']]'],
+    data: {
+        name:'',
+        email:'',
+    },
+    /* ページ読み込み時に実行される部分 */
+    mounted: function(){
+      //Cookieを全て取得
+      var cookies = document.cookie;
+
+      //取得したCookieを分割する
+      var cookiesArray = cookies.split(';');
+      var NAME, EMAIL, PASS;
+      for(var c of cookiesArray){
+        var cArray = c.split('=');
+        if(cArray[0] == ' name'){
+          NAME = cArray[1];
+        }else if(cArray[0] == ' email'){
+          EMAIL = cArray[1];
+        }
+      }
+
+      /* //確認部分--指定したidの後にCookieの内容を表示する--
+      let e = document.getElementById('###');
+      e.insertAdjacentHTML('afterend', '<p>' + document.cookie + '</p>');
+      e.insertAdjacentHTML('afterend', '<p>' + EMAIL + '</p>'); */
+
+      //初期値を登録する
+      this.name=NAME;
+      this.email=EMAIL;
+    },
+    methods: {
+      CreateUser: function() {
+        //cookieに入力されているの値を登録する(有効期限600秒)
+        document.cookie = 'name=' + this.name + ';max-age=600';
+        document.cookie = 'email=' + this.email + ';max-age=600';
+      },
+    },
+  })
+</script>
+{% endblock script %}
