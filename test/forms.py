@@ -7,6 +7,18 @@ def check_name_length(value):
     if name_length < 4 or name_length >50:
         raise ValidationError('ユーザ名: 4~50文字で入力してください')
 
+def my_index(l, x, default=False):
+    if x in l:
+        return l.index(x)
+    else:
+        return default
+
+def check_email(value):
+    email = value.split()
+    atmark = my_index(email,'@')
+    if atmark == False:
+        raise ValidationError('正しいEmailを入力してください')
+
 def check_password_length(value):
     pass_length = len(value)
     if pass_length < 8 or pass_length > 50:
@@ -32,6 +44,12 @@ class UserForm(forms.Form):
         required=True,
         max_length=100,
         validators=[check_name_length],
+    )
+    email = forms.CharField(
+        label='email',
+        required=True,
+        max_length=100,
+        validators=[check_email],
     )
     password = forms.CharField(
         label='password',

@@ -14,7 +14,7 @@
     {% csrf_token %}
     <!-- 科目のプルダウンメニュー -->
     <div class="mb-3">
-      <label class="form-label" style="font-size: 25px;">科目<br>
+      <label class="form-label" style="font-size: 25px; font-weight: bold; color: cadetblue;">科目<br>
         <input name="subject" placeholder="未分類" type="subject" list="subject" style="font-size: 20px;">
         <datalist id="subject">
           もしくはリストから選択
@@ -28,14 +28,14 @@
     </div>
     <!-- 問題・解答 -->
     <div class="mb-3">
-      <label class="form-label" style="font-size: 25px;">問題</label>
+      <label class="form-label" style="font-size: 25px; font-weight: bold; color: cadetblue;">問題</label>
       <textarea  rows="5" cols="50" class="form-control" placeholder="問題文を入力してください" name="question" type="question" v-model="question" style="font-size: 20px;"></textarea>
-      <div v-if="check_que" style="color: red;">問題を入力してください</div>
+      <div v-if="check_que" style="color: red; text-align: right;">問題を入力してください</div>
     </div>
     <div class="mb-3">
-      <label class="form-label" style="font-size: 25px;">解答</label>
+      <label class="form-label" style="font-size: 25px; font-weight: bold; color: cadetblue;">解答</label>
       <textarea  rows="5" cols="50" class="form-control" placeholder="解答を入力してください" name="answer" type="answer" v-model="answer" style="font-size: 20px;"></textarea>
-      <div v-if="check_ans" style="color: red;">解答を入力してください</div>
+      <div v-if="check_ans" style="color: red; text-align: right;">解答を入力してください</div>
     </div>
     <!-- 追加ボタン -->
     <button type="submit" :disabled="!sendable" class="btn btn-primary" style="margin: 0.5rem; font-size: 25px;">テストを追加</button>

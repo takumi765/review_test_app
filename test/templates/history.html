@@ -1,31 +1,114 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div>
-  <label class="form-label">問題検索</label>
-  <input class="form-control" id="que" name="que" type="search" placeholder="Search" aria-label="Search">
-  <button class="btn btn-outline-success mt-2" type="button" onclick="search_tests()">検索</button>
-</div>
 
-<div id="search_test">
-  <ul v-for="test in tests">
-    ([[ test.id ]])
-    ([[test.que]])
-    ([[test.ans]])
-  </ul>
-</div>
 
-<h1 style="font-size: 40px; margin-bottom: 3rem;"><b>登録した問題</b></h1>
+<h1 style="font-size: 40px; margin-bottom: 1rem;"><b>登録した問題</b></h1>
 
 <!-- メニューに戻る -->
 <form method="get" action="{% url 'test:index' %}">
-  <button type="submit" class="btn btn-secondary" style="font-size: 20px;">戻る</button>
+  <button type="submit" class="btn btn-secondary" style="font-size: 20px; margin-bottom: 2rem;">戻る</button>
 </form>
 
-<div  id="popup">
+<div id="popup">
+  <!-- 問題検索 -->
+  <div class="card" style="margin: 15px 0; border: 2px solid; border-color: gray;">
+    <div class="card-header">
+      <div>
+        <label class="form-label" style="text-align: center; font-size: 25px; font-weight: bold; color: cadetblue;">問題検索</label>
+        <div style="display: flex;">
+          <input class="SearchTest" id="que" name="que" type="search" placeholder="Search" aria-label="Search">
+          <button class="btn btn-outline-success mt-2" type="button" onclick="search_tests()" style="font-size: 20px;">検索</button>
+        </div>
+      </div>
+    </div>
+    <div class="card-body" style="background-color: #fcfcfc;">
+      <div class="testcard">
+        <ul v-for="TEST, index in TESTS">
+          <div class="card box" style="width: 23rem; margin: 5px; text-align: left;">
+            <div class="card-body">
+              <div class="row">
+                <div class="col">
+                  <span class="badge bg-secondary">[[TEST.subject]]</span>
+                </div>
+                <div class="col">
+                  <span class="badge bg-light text-dark">正答率：[[TEST.percent]]%</span>
+                </div>
+              </div>
+              <p class="card-text">[[ TEST.que ]]</p>
+              <!-- Button trigger modal -->
+              <button type="button" class="btn btn-primary" data-bs-toggle="modal" :data-bs-target="'#Modal'+String(index)">
+                <img src="../static/img/settings.png" width="25px" >
+              </button>
+            </div>
+          </div>
+      
+          <!-- Modal -->
+          <div class="modal fade" :id="'Modal'+String(index)" tabindex="-1" aria-labelledby="testModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="testModalLabel">テストの詳細（科目：[[TEST.subject]]）</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                
+                <div class="modal-body" style="text-align: left;">
+                  <h5>問題</h5>
+                  [[TEST.que]]
+                  <h5>解答</h5>
+                  <div style="color: red;">[[TEST.ans]]</div>
+                  <h5>記録</h5>
+                  正答率：[[TEST.percent]]%<br>
+                  総出題回数：[[TEST.total]]
+                </div>
+      
+                <div class="modal-footer">
+                  <form method="post" action="{% url 'test:history' %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="test_id" :value="[[ TEST.id ]]">
+                    <div>
+                      <label class="form-label" style="font-size: 25px;">科目</label><br>
+                      <select style="font-size: 20px;" v-model="TEST.subject" name="subject" type="subject">
+                        <option value="全て">全て</option>
+                        <option v-for="subject, index in subjects" :value="subject.subject">[[ subject.subject_name ]]</option>
+                      </select>
+                    </div>
+                    <div class="container">
+                      <div class="row">
+                        <div class="col">
+                          <h5>問題</h5>
+                          <textarea rows="5" cols="30" name="question" v-model="TEST.que" placeholder="問題文を入力してください" style="font-size: 20px;"></textarea>
+                          <!-- フォームバリデーション -->
+                          <!-- v-model="question"
+                          <div v-if="check_que" style="color: red;">問題を入力してください</div> -->
+                        </div>
+                        <div class="col">
+                          <h5>解答</h5>
+                          <textarea rows="5" cols="30" name="answer" v-model="TEST.ans" placeholder="解答を入力してください" style="font-size: 20px;"></textarea>
+                          <!-- フォームバリデーション -->
+                          <!-- v-model="answer"
+                          <div v-if="check_ans" style="color: red;">解答を入力してください</div> -->
+                        </div>
+                      </div>
+                    </div>
+                    <!-- 送信ボタン -->
+                    <button type="submit" class="btn btn-primary" name="update" style="margin: 0.3rem; font-size: 20px;">更新</button>
+                      <!-- フォームバリデーション -->
+                      <!-- :disabled="!sendable" -->
+                    <button type="submit" class="btn btn-danger" name="delete" style="margin: 0.3rem; font-size: 20px;">削除</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ul>
+      </div>
+    </div>
+  </div>
+  
   <!-- フィルタリング -->
   <div style="margin: 10px;">
-    <div style="font-size: 25px;">表示項目</div>
+    <div style="font-size: 25px; margin: 20px 0 10px 0; font-weight: bold; color: cadetblue;">テスト一覧</div>
     <select style="font-size: 20px;" @change="detectChange" v-model="selected">
       <option value="全て">全て</option>
       <option v-for="subject, index in subjects" :value="subject.subject">[[ subject.subject_name ]]</option>
@@ -138,37 +221,28 @@
     })
     .then(function(response){
       //console.log(response.data.tests);
-      tests.splice(0)
+      TESTS.splice(0)
       for(const test of response.data.tests){
-        console.log(test)
-        tests.push(test)
+        console.log(test);
+        TESTS.push(test);
       }
     })
     .catch(function(error){
       console.log(error);
     });
   }
-  
-  var tests = []
-
-  var vue = new Vue({
-    delimiters: ['[[', ']]'],
-    el: '#search_test',
-    data: {
-      tests: tests
-    }
-  });
-</script>
-
-<script>
+ 
   //DjangoからのデータをJSON形式で受け取る
   var testList = JSON.parse(document.getElementById('tests_list').textContent);
   var subjectList = JSON.parse(document.getElementById('subject_list').textContent);
+  
+  var TESTS = [];
 
   new Vue({
     el: '#popup',
     delimiters: ['[[', ']]'],
     data: {
+      TESTS: TESTS,
       subjects: subjectList,
       selected: '',
       // question: '',

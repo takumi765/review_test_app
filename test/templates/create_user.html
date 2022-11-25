@@ -2,9 +2,13 @@
 {% block title %}アカウント登録{% endblock title %}
 {% block content %}
 
-{% if form.errors %}
-{{ form.errors }}
-{% endif %}
+<!-- フォームバリデーションエラーメッセージ -->
+{% for field, errors in form.errors.items %}
+  {% for error in errors %}
+    <p class="alert alert-danger">{{ error }}</p>
+  {% endfor %}
+{% endfor %}
+
 <div id="create_user">
     <form method="post" action="{% url 'test:create_user' %}">
         {% csrf_token %}
