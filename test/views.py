@@ -18,8 +18,8 @@ def login_view(request):
     return render(request, 'login.html', param)
   if request.method == 'POST':
     password = request.POST.get('password')
-    userinfo = User.objects.filter(email=request.POST.get('email'))
-    user = authenticate(username=userinfo[0], password=password)
+    username = request.POST.get('username')
+    user = authenticate(username=username, password=password)
     if user is not None:
       login(request, user)
       return HttpResponseRedirect(reverse('test:index'), {'user': user}) 

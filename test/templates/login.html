@@ -16,8 +16,8 @@
 <form method="post" action="{% url 'test:login' %}">
     {% csrf_token %}
     <div class="mb-3">
-        <label class="form-label">Email</label>
-        <input class="form-control" name="email" type="text" />
+        <label class="form-label">ユーザ名</label>
+        <input class="form-control" name="username" type="text" />
     </div>
     <div class="mb-3">
         <label class="form-label">パスワード</label>
@@ -28,7 +28,7 @@
 <a href="{% url 'test:create_user' %}" style="font-size: 20px;">新規登録画面へ</a>
 
 
-<div class="card" style="margin: 30px 20%;">
+<div class="card" style="margin: 30px 10%;">
     <div class="card-header">
       <a style="text-align: center; font-size: 30px;">出来ること</a>
     </div>
