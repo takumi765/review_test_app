@@ -33,6 +33,9 @@ git checkout oza_dev2
 .gitignoreにreview_test_db_sqlite3を追加したからプル忘れずに
 
 ```
+git fetch
+```
+```
 git pull
 ```
 
