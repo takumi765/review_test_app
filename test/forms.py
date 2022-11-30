@@ -14,9 +14,8 @@ def my_index(l, x, default=False):
         return default
 
 def check_email(value):
-    email = value.split()
-    atmark = my_index(email,'@')
-    if atmark == False:
+    email_length = len(value)
+    if email_length < 4 or email_length > 50:
         raise ValidationError('正しいEmailを入力してください')
 
 def check_password_length(value):
