@@ -30,7 +30,7 @@ git checkout oza_dev2
 <br>
 自分のプロジェクトフォルダにて
 
-.gitignoreにreview_test_db_sqlite3を追加したからプル忘れずに
+mainブランチに.gitignoreにreview_test_db_sqlite3を追加したからプル忘れずに
 
 ```
 git fetch
