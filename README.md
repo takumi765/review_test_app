@@ -1,6 +1,6 @@
 # 復習テストアプリ
-## Link
-<a href="http://54.248.134.52/login/" target="_brank"></a>
+## 使う！
+<a href="http://54.248.134.52/login/" target="_brank">こちら</a>
 ## チームメンバ
 - 岩﨑琢己：<a href=https://github.com/takumi765 target=_brank>Takumi765</a>
 - 尾崎克明：<a href=https://github.com/ozuaq>ozuaq</a>
