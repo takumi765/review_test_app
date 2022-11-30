@@ -19,6 +19,7 @@
 
 #### テストを作る
 科目/問題/解答を入力し、自分なりのテストが作れます。
+
 <img width="200px" alt="テストを作る画面" src="https://user-images.githubusercontent.com/82143606/204826778-7929c282-a992-44a4-9af7-414f04f78723.png">
 
 #### テストを始める
@@ -27,6 +28,7 @@
 回答を見たのちに正解不正解を自分で登録します。
 
 テストはランダムに出題されます。
+
 <img width="200px" alt="テストをする画面" src="https://user-images.githubusercontent.com/82143606/204827381-169f086e-46d3-45b0-8c44-8fca283b1b5d.png">
 
 #### 登録した問題
@@ -37,6 +39,6 @@
 4. 問題内容の修正
 5. 正答率などの今までの記録を確認
 
-<img width="200px" alt="登録した問題画面" src="https://user-images.githubusercontent.com/82143606/204829256-a2c4d415-1acb-4192-a0ed-424040facb52.pngg">
+<img width="200px" alt="登録した問題画面" src="https://user-images.githubusercontent.com/82143606/204829256-a2c4d415-1acb-4192-a0ed-424040facb52.png">
   
  
