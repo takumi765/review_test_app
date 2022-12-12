@@ -10,7 +10,7 @@
 ## 使用方法
 ### 新規登録
   1. 画面中央の<a href=http://54.248.134.52/create_user>新規登録画面へ</a>をクリックします。
-  2. ユーザ名/Email/パスワードを登録します。
+  2. ユーザ名/Email/パスワードを登録します。※Emailは適当なもので大丈夫です．万が一問題が生じても責任は負いかねます．
 <img width="200px" alt="初期画面" src="https://user-images.githubusercontent.com/82143606/204824032-4dd4ae85-a2ae-4693-82a2-537df762a8ca.png">
 <img width="200px" alt="新規登録画面" src="https://user-images.githubusercontent.com/82143606/204826213-7bbd6ee0-ce35-4556-907b-930a17d04d96.png">
 
