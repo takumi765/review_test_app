@@ -5,7 +5,7 @@
 - 岩﨑琢己：<a href=https://github.com/takumi765 target=_brank>Takumi765</a>
 - 尾崎克明：<a href=https://github.com/ozuaq>ozuaq</a>
 ## 作り方ブログ
-<a href=https://note.com/good_echium475/n/n484de9e3af07 target=_brank>ブログへ飛ぶ
+<a href=https://note.com/good_echium475/m/m6ef56a7ba8c2 target=_brank>ブログへ飛ぶ
 ## 使用技術
 - バックエンド：Django
 - フロントエンド：Vue.js, HTML, CSS
